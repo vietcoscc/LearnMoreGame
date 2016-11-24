@@ -15,10 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 
+import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
 import com.example.vaio.parser.JsoupParser;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener {
 
@@ -34,14 +38,30 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ActionBarDrawerToggle drawerToggle;
     private SearchView searchView;
 
+
+    private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
+    private ArrayList<Integer> arrCountContentDrawerLayout;
+    private ListView listViewDrawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //khoi tao
+        arrCountContentDrawerLayout=new ArrayList<>();
+        initCount();
+        listViewDrawerLayoutAdapter=new ListViewDrawerLayoutAdapter(this,arrCountContentDrawerLayout);
+
         initToolbar();
         initMainViews();
 
     }
+    //khoi tao dem so tren drawerlayout
+    private void initCount() {
+        arrCountContentDrawerLayout.add(12);
+        arrCountContentDrawerLayout.add(0);
+    }
+
     private void initToolbar() {
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
@@ -72,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
         viewPager.setOffscreenPageLimit(5);
+
+        //listview cua drawerlayout
+        listViewDrawerLayout= (ListView) findViewById(R.id.lv_drawerlayout);
+        listViewDrawerLayout.setAdapter(listViewDrawerLayoutAdapter);
     }
 
     @Override

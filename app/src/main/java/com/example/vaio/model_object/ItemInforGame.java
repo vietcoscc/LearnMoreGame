@@ -1,4 +1,4 @@
-package com.example.vaio.iteminfor;
+package com.example.vaio.model_object;
 
 import java.util.ArrayList;
 
@@ -13,10 +13,10 @@ public class ItemInforGame {
     private String configuration;
     private ArrayList<String> arrUrlImage;
 
-    public ItemInforGame(String introduce, String linkYoutube,String configuration, ArrayList<String> arrUrlImage) {
+    public ItemInforGame(String introduce, String linkYoutube, String configuration, ArrayList<String> arrUrlImage) {
         this.introduce = introduce;
         this.linkYoutube = linkYoutube;
-        this.configuration=configuration;
+        this.configuration = configuration;
         this.arrUrlImage = arrUrlImage;
     }
 
