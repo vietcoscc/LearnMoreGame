@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.learnmoregame.MainActivity;
 import com.example.vaio.learnmoregame.R;
 import com.example.vaio.model_object.ItemListView;
@@ -21,24 +23,16 @@ import java.util.Collection;
  * Created by vaio on 11/22/2016.
  */
 
-public class ActionGameFragment extends android.support.v4.app.Fragment {
-    public static final int WHAT = 1;
-    private ArrayList<ItemListView> arrActionGame = new ArrayList<>();
+public class ActionGameFragment extends BaseFragment {
+    public static final String LINK = "http://linkneverdie.com/Action-Games/?theloaiId=25&page=";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_action_game,container,false);
-        JsoupParser jsoupParser = new JsoupParser(handler);
-        jsoupParser.execute("http://linkneverdie.com/Games-FPS/?theloaiId=1&page=1");
+        View v = inflater.inflate(R.layout.fragment_action_game, container, false);
+        getDataFromWeb(LINK);
+        initViews(v);
         return v;
     }
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if(msg.what == WHAT){
-                arrActionGame.addAll((Collection<? extends ItemListView>) msg.obj);
-            }
-        }
-    };
+
+
 }

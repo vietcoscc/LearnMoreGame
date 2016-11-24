@@ -18,8 +18,10 @@ import android.view.MenuItem;
 
 
 import com.example.vaio.adapter.ViewPagerAdapter;
+import com.example.vaio.parser.JsoupParser;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener {
+
     public static final String ACTION_GAME = "Action";
     public static final String FPS_GAME = "FPS";
     public static final String OPEN_WORLD_GAME = "Open world";
@@ -40,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         initMainViews();
 
     }
-
     private void initToolbar() {
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("asfasfafsdf");
     }
 
     private void initMainViews() {
@@ -66,13 +66,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.setOnTabSelectedListener(this);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        tabLayout.requestLayout();
         // viewPager
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
+        viewPager.setOffscreenPageLimit(5);
     }
 
     @Override
