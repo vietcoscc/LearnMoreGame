@@ -38,7 +38,8 @@ public class ActionGameFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_action_game, container, false);
         initViews(v, LINK, TYPE_ID);
-        listView.setOnScrollListener(this);
+
+
         return v;
     }
 

@@ -28,11 +28,22 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private String pageTitle[] = {"Action", "FPS", "Open world", "Survival", "TPS"};
     private MyDatabase database;
     private Context context;
+    private ActionGameFragment actionGameFragment;
+    private FpsGameFragment fpsGameFragment;
+    private OpenWorldFragment openWorldFragment;
+    private SurvivalGameFragment survivalGameFragment;
+    private TpsGameFragment tpsGameFragment;
 
     public ViewPagerAdapter(Context context, FragmentManager fm, int tabCount) {
         super(fm);
         this.tabCount = tabCount;
         this.context = context;
+        //
+        actionGameFragment = new ActionGameFragment(context);
+        fpsGameFragment = new FpsGameFragment(context);
+        openWorldFragment = new OpenWorldFragment(context);
+        survivalGameFragment = new SurvivalGameFragment(context);
+        tpsGameFragment = new TpsGameFragment(context);
     }
 
     @Override
@@ -44,19 +55,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                ActionGameFragment actionGameFragment = new ActionGameFragment(context);
                 return actionGameFragment;
             case 1:
-                FpsGameFragment fpsGameFragment = new FpsGameFragment(context);
                 return fpsGameFragment;
             case 2:
-                OpenWorldFragment openWorldFragment = new OpenWorldFragment(context);
                 return openWorldFragment;
             case 3:
-                SurvivalGameFragment survivalGameFragment = new SurvivalGameFragment(context);
                 return survivalGameFragment;
             case 4:
-                TpsGameFragment tpsGameFragment = new TpsGameFragment(context);
                 return tpsGameFragment;
             default:
                 return null;

@@ -9,8 +9,11 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 
+import com.example.vaio.adapter.GridViewAdapter;
 import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.database.MyDatabase;
 import com.example.vaio.learnmoregame.MainActivity;
@@ -27,11 +30,13 @@ import static android.content.ContentValues.TAG;
  * Created by vaio on 11/24/2016.
  */
 
-public class BaseFragment extends Fragment implements AbsListView.OnScrollListener {
+public class BaseFragment extends Fragment implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     public static final int WHAT = 1;
     protected int currentPage = 0;
     protected ListView listView;
-    protected ListViewAdapter adapter;
+    protected GridView gridView;
+    protected ListViewAdapter listViewAdapter;
+    protected GridViewAdapter gridViewAdapter;
     protected ArrayList<ItemListView> arrItemListView = new ArrayList<>();
     private Context context;
     private MyDatabase database;
@@ -49,12 +54,32 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     protected void initViews(View v, final String link, final int typeId) {
         this.link = link;
         this.typeId = typeId;
+
         listView = (ListView) v.findViewById(R.id.listView);
-        adapter = new ListViewAdapter(getContext(), arrItemListView);
-        listView.setAdapter(adapter);
+        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView);
+        listView.setAdapter(listViewAdapter);
+        listView.setOnScrollListener(this);
+        listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
+
+
+        gridView = (GridView) v.findViewById(R.id.gridView);
+        gridViewAdapter = new GridViewAdapter(getContext(), arrItemListView);
+        gridView.setAdapter(gridViewAdapter);
+        gridView.setOnScrollListener(this);
+        gridView.setOnItemClickListener(this);
+        gridView.setOnItemLongClickListener(this);
+
+
+        listView.setVisibility(View.INVISIBLE);
+        gridView.setVisibility(View.VISIBLE);
         if (!MainActivity.isNetworkAvailable(context)) {
             getDataFromDatabase(typeId);
         }
+    }
+
+    public void changeViewList() {
+
     }
 
     public void getDataFromDatabase(int typeId) {
@@ -65,14 +90,16 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
                 arrItemListView.add(arrTmp.get(i));
             }
         }
-        adapter.notifyDataSetChanged();
+        listViewAdapter.notifyDataSetChanged();
+        gridViewAdapter.notifyDataSetChanged();
     }
 
     public void getDataFromWeb(String link, int typeId) {
         currentPage++;
         JsoupParser jsoupParser = new JsoupParser(handler, typeId);
         jsoupParser.execute(link + currentPage);
-        adapter.notifyDataSetChanged();
+//        listViewAdapter.notifyDataSetChanged();
+//        gridViewAdapter.notifyDataSetChanged();
     }
 
     protected Handler handler = new Handler() {
@@ -86,7 +113,8 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
                 }
                 arrItemListView.addAll((Collection<? extends ItemListView>) msg.obj);
                 database.insertArrItemListView((ArrayList<ItemListView>) msg.obj);
-                adapter.notifyDataSetChanged();
+                listViewAdapter.notifyDataSetChanged();
+                gridViewAdapter.notifyDataSetChanged();
             }
         }
     };
@@ -103,5 +131,16 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
             getDataFromWeb(link, typeId);
             lastTotalItemCount = totalItemCount;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // Click vào item list view
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        // Nhấn giữ vào item list view
+        return false;
     }
 }
