@@ -2,8 +2,6 @@ package com.example.vaio.pasresinforgame;
 
 import android.os.AsyncTask;
 
-import com.example.vaio.model_object.ItemInforGame;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
