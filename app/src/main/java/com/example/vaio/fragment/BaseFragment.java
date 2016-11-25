@@ -44,6 +44,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     private int lastTotalItemCount = -1;
     private String link;
     private int typeId;
+    private boolean currentDisplayedList = true; // true hiển thị list view . false hiển thị gridview
 
     public BaseFragment(Context context) {
         this.context = context;
@@ -70,16 +71,23 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         gridView.setOnItemClickListener(this);
         gridView.setOnItemLongClickListener(this);
 
-
-        listView.setVisibility(View.INVISIBLE);
-        gridView.setVisibility(View.VISIBLE);
+        changeViewList();
+        changeViewList();
         if (!MainActivity.isNetworkAvailable(context)) {
             getDataFromDatabase(typeId);
         }
     }
 
     public void changeViewList() {
-
+        if (currentDisplayedList) {
+            listView.setVisibility(View.VISIBLE);
+            gridView.setVisibility(View.INVISIBLE);
+            currentDisplayedList = false;
+        } else {
+            listView.setVisibility(View.INVISIBLE);
+            gridView.setVisibility(View.VISIBLE);
+            currentDisplayedList = true;
+        }
     }
 
     public void getDataFromDatabase(int typeId) {
