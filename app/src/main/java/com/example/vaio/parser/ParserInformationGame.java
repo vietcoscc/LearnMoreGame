@@ -1,25 +1,29 @@
-package com.example.vaio.pasresinforgame;
+package com.example.vaio.parser;
+
+/**
+ * Created by TungMai on 25/11/2016.
+ */
 
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.example.vaio.iteminfor.ItemInforGame;
+import com.example.vaio.model_object.ItemInforGame;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by TungMai on 24/11/2016.
  */
 
-public class ParsesInformationGame extends AsyncTask<String, Void, ItemInforGame> {
+public class ParserInformationGame extends AsyncTask<String, Void, ItemInforGame> {
     private static final String TAG = "ParsesInformationGame";
     public static final int WHAT_PARSER_INFOR_GAME = 32;
     private Handler handler;
@@ -73,3 +77,4 @@ public class ParsesInformationGame extends AsyncTask<String, Void, ItemInforGame
         handler.sendMessage(message);
     }
 }
+
