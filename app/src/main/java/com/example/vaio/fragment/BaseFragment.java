@@ -69,7 +69,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     public void getDataFromWeb(String link, int typeId) {
         currentPage++;
-        arrItemListView.clear();
+//        arrItemListView.clear();
         JsoupParser jsoupParser = new JsoupParser(handler, typeId);
         jsoupParser.execute(link + currentPage);
 //        ArrayList<ItemListView> arrTmp = database.getDataFromGameList();
