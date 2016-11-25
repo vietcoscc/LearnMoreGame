@@ -36,6 +36,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     private Context context;
     private MyDatabase database;
     private boolean isCleared = false;
+    private int lastTotalItemCount = -1;
     private String link;
     private int typeId;
 
@@ -97,9 +98,10 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if((firstVisibleItem + visibleItemCount) ==  totalItemCount&& MainActivity.isNetworkAvailable(getContext())&& currentPage<20)
-        {
-            getDataFromWeb(link,typeId);
+
+        if ((firstVisibleItem + visibleItemCount) == totalItemCount && MainActivity.isNetworkAvailable(getContext()) && currentPage < 20 && lastTotalItemCount < totalItemCount) {
+            getDataFromWeb(link, typeId);
+            lastTotalItemCount = totalItemCount;
         }
     }
 }
