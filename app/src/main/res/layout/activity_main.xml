@@ -15,26 +15,27 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:gravity="right"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
+            android:gravity="right"
             android:minHeight="?attr/actionBarSize"
             android:subtitleTextColor="#FFFFFFFF"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
             <LinearLayout
-                android:gravity="right"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal"></LinearLayout>
         </android.support.v7.widget.Toolbar>
+
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:tabGravity="center"
@@ -50,7 +51,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/iv_drawerlayout"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="#000000"
+            android:scaleType="fitStart"
+            android:src="@drawable/image_backgroup_drawerlayout" />
+
+        <ListView
+            android:id="@+id/lv_drawerlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
 
     </LinearLayout>
 

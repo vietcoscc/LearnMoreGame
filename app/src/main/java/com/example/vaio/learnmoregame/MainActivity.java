@@ -1,8 +1,6 @@
 package com.example.vaio.learnmoregame;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
@@ -17,10 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 
+import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
 import com.example.vaio.parser.JsoupParser;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener {
 
@@ -36,13 +38,28 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ActionBarDrawerToggle drawerToggle;
     private SearchView searchView;
 
+
+    private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
+    private ArrayList<Integer> arrCountContentDrawerLayout;
+    private ListView listViewDrawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //khoi tao
+        arrCountContentDrawerLayout=new ArrayList<>();
+        initCount();
+        listViewDrawerLayoutAdapter=new ListViewDrawerLayoutAdapter(this,arrCountContentDrawerLayout);
+
         initToolbar();
         initMainViews();
 
+    }
+    //khoi tao dem so tren drawerlayout
+    private void initCount() {
+        arrCountContentDrawerLayout.add(12);
+        arrCountContentDrawerLayout.add(0);
     }
 
     private void initToolbar() {
@@ -71,14 +88,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         // viewPager
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
         viewPager.setOffscreenPageLimit(5);
-    }
 
-    public static boolean isNetworkAvailable(final Context context) {
-        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
+        //listview cua drawerlayout
+        listViewDrawerLayout= (ListView) findViewById(R.id.lv_drawerlayout);
+        listViewDrawerLayout.setAdapter(listViewDrawerLayoutAdapter);
     }
 
     @Override
