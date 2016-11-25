@@ -22,9 +22,11 @@ import java.util.ArrayList;
 public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>> {
     private static final String TAG = "JsoupParser";
     private Handler handler;
+    private int typeId;
 
-    public JsoupParser(Handler handler) {
+    public JsoupParser(Handler handler, int typeId) {
         this.handler = handler;
+        this.typeId = typeId;
     }
 
     @Override
@@ -39,8 +41,12 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
                 Elements elementsImage = elementsI.get(i).select("img");
                 String path = elementsImage.attr("src");
                 StringBuilder builder = new StringBuilder(path);
-//                builder.delete(0, 2);
-                String imageUrl = "linkneverdie.com" + builder.toString();
+                String imageUrl;
+                if(builder.toString().charAt(0)=='h'){
+                    imageUrl = builder.toString();
+                }else {
+                    imageUrl = "http://linkneverdie.com" + builder.toString();
+                }
                 String name = elementsD.get(i).select("h3").text();
                 String type = elementsD.get(i).select("span").text();
                 String nameAndTypeAndDateAndViews = elementsD.get(i).text();
@@ -55,7 +61,7 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
                 Log.e(TAG, date);
                 Log.e(TAG, detailsUrl);
 
-                ItemListView itemListView = new ItemListView(imageUrl, name, type, date, views, detailsUrl);
+                ItemListView itemListView = new ItemListView(typeId, imageUrl, name, type, date, views, detailsUrl);
                 arrItemListView.add(itemListView);
             }
         } catch (Exception e) {
@@ -71,6 +77,7 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
         Message msg = new Message();
         msg.what = 1;
         msg.obj = itemListViews;
+        msg.arg1 = typeId;
         handler.sendMessage(msg);
     }
 

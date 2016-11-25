@@ -5,6 +5,7 @@ package com.example.vaio.model_object;
  */
 
 public class ItemListView {
+    private int typeId; // Xác định item nằm trong listView nào
     private String imageUrl;
     private String name;
     private String type;
@@ -12,13 +13,18 @@ public class ItemListView {
     private String views;
     private String detailsUrl;
 
-    public ItemListView(String imageUrl, String name, String type, String date, String views, String detailsUrl) {
+    public ItemListView(int typeId, String imageUrl, String name, String type, String date, String views, String detailsUrl) {
+        this.typeId = typeId;
         this.imageUrl = imageUrl;
         this.name = name;
         this.type = type;
         this.date = date;
         this.views = views;
         this.detailsUrl = detailsUrl;
+    }
+
+    public int getTypeId() {
+        return typeId;
     }
 
     public String getImageUrl() {

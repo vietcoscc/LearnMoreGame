@@ -1,16 +1,14 @@
 package com.example.vaio.pasresinforgame;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.example.vaio.iteminfor.ItemInforGame;
+import com.example.vaio.model_object.ItemInforGame;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

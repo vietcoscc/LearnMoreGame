@@ -23,9 +23,11 @@ import java.util.List;
  */
 
 public class ListViewAdapter extends ArrayAdapter {
+    private static final String TAG = "ListViewAdapter";
     private Context context;
     private ArrayList<ItemListView> arrItemListView;
     private LayoutInflater inflater;
+    private int currentPosition;
 
     public ListViewAdapter(Context context, ArrayList<ItemListView> arrItemListView) {
         super(context, android.R.layout.simple_list_item_1, arrItemListView);
@@ -42,6 +44,7 @@ public class ListViewAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, View v, ViewGroup parent) {
+        currentPosition = position;
         ItemListView itemListView = arrItemListView.get(position);
         ViewHolder viewHolder;
         if (v == null) {
@@ -56,9 +59,10 @@ public class ListViewAdapter extends ArrayAdapter {
         } else {
             viewHolder = (ViewHolder) v.getTag();
         }
-        Log.e("", itemListView.getImageUrl());
+        Log.e(TAG, itemListView.getImageUrl());
+
         Picasso.with(context)
-                .load("http://"+itemListView.getImageUrl())
+                .load(itemListView.getImageUrl())
                 .placeholder(R.drawable.loading)
                 .config(Bitmap.Config.RGB_565)
                 .error(R.drawable.warning)
@@ -68,6 +72,11 @@ public class ListViewAdapter extends ArrayAdapter {
         viewHolder.date.setText(itemListView.getDate());
         viewHolder.views.setText(itemListView.getViews());
         return v;
+    }
+
+    public boolean reachedEndOfList() {
+        // can check if close or exactly at the end
+        return currentPosition == getCount() - 1;
     }
 
     class ViewHolder {

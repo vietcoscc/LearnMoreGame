@@ -1,6 +1,8 @@
 package com.example.vaio.learnmoregame;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         initMainViews();
 
     }
+
     private void initToolbar() {
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
@@ -68,10 +71,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         // viewPager
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
         viewPager.setOffscreenPageLimit(5);
+    }
+
+    public static boolean isNetworkAvailable(final Context context) {
+        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
     }
 
     @Override
