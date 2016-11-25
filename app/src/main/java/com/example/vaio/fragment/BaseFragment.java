@@ -69,15 +69,8 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     public void getDataFromWeb(String link, int typeId) {
         currentPage++;
-//        arrItemListView.clear();
         JsoupParser jsoupParser = new JsoupParser(handler, typeId);
         jsoupParser.execute(link + currentPage);
-//        ArrayList<ItemListView> arrTmp = database.getDataFromGameList();
-//        for (int i = 0; i <arrTmp.size(); i++) {
-//            if (arrTmp.get(i).getTypeId() == typeId) {
-//                arrItemListView.add(arrTmp.get(i));
-//            }
-//        }
         adapter.notifyDataSetChanged();
     }
 
@@ -104,6 +97,9 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
+        if((firstVisibleItem + visibleItemCount) ==  totalItemCount&& MainActivity.isNetworkAvailable(getContext())&& currentPage<20)
+        {
+            getDataFromWeb(link,typeId);
+        }
     }
 }

@@ -44,19 +44,4 @@ public class TpsGameFragment extends BaseFragment {
         listView.setOnScrollListener(this);
         return v;
     }
-
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        Log.e(TAG,(firstVisibleItem + visibleItemCount)+" : "+totalItemCount);
-        if((firstVisibleItem + visibleItemCount) ==  totalItemCount&& MainActivity.isNetworkAvailable(getContext())&& currentPage<20)
-        {
-            getDataFromWeb(LINK,TYPE_ID);
-        }
-
-    }
 }
