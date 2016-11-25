@@ -33,8 +33,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.tabCount = tabCount;
         this.context = context;
-        database = new MyDatabase(context);
-
     }
 
     @Override
