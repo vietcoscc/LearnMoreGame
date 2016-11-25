@@ -59,7 +59,7 @@ public class ListViewAdapter extends ArrayAdapter {
         } else {
             viewHolder = (ViewHolder) v.getTag();
         }
-        Log.e(TAG, itemListView.getImageUrl());
+//        Log.e(TAG, itemListView.getImageUrl());
 
         Picasso.with(context)
                 .load(itemListView.getImageUrl())
@@ -74,10 +74,10 @@ public class ListViewAdapter extends ArrayAdapter {
         return v;
     }
 
-    public boolean reachedEndOfList() {
-        // can check if close or exactly at the end
-        return currentPosition == getCount() - 1;
-    }
+//    public boolean reachedEndOfList() {
+//        // can check if close or exactly at the end
+//        return currentPosition == getCount() - 1;
+//    }
 
     class ViewHolder {
         ImageView image;

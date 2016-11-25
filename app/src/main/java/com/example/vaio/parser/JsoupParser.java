@@ -53,13 +53,13 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
                 String views = getViews(nameAndTypeAndDateAndViews);
                 String date = getDate(nameAndTypeAndDateAndViews, name, type, views);
                 String detailsUrl = "linkneverdie.com" + elementsD.get(i).select("a").attr("href");
-
-                Log.e(TAG, imageUrl);
-                Log.e(TAG, name);
-                Log.e(TAG, type);
-                Log.e(TAG, views);
-                Log.e(TAG, date);
-                Log.e(TAG, detailsUrl);
+//
+//                Log.e(TAG, imageUrl);
+//                Log.e(TAG, name);
+//                Log.e(TAG, type);
+//                Log.e(TAG, views);
+//                Log.e(TAG, date);
+//                Log.e(TAG, detailsUrl);
 
                 ItemListView itemListView = new ItemListView(typeId, imageUrl, name, type, date, views, detailsUrl);
                 arrItemListView.add(itemListView);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.example.vaio.parser.JsoupParser;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by vaio on 11/22/2016.
@@ -49,6 +52,7 @@ public class TpsGameFragment extends BaseFragment {
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        Log.e(TAG,(firstVisibleItem + visibleItemCount)+" : "+totalItemCount);
         if((firstVisibleItem + visibleItemCount) ==  totalItemCount&& MainActivity.isNetworkAvailable(getContext())&& currentPage<20)
         {
             getDataFromWeb(LINK,TYPE_ID);
