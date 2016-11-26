@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ import java.util.Collection;
  * Created by vaio on 11/22/2016.
  */
 
-public class ActionGameFragment extends BaseFragment {
+public class ActionGameFragment extends BaseFragment  {
     public static final int TYPE_ID = 0;
     public static final String LINK = "http://linkneverdie.com/Action-Games/?theloaiId=25&page=";
 
@@ -38,8 +39,6 @@ public class ActionGameFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_action_game, container, false);
         initViews(v, LINK, TYPE_ID);
-
-
         return v;
     }
 

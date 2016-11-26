@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.vaio.adapter.GridViewAdapter;
 import com.example.vaio.adapter.ListViewAdapter;
@@ -33,6 +35,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     public static final int WHAT = 1;
     public static final String KEY_INTENT_CHANGE = "key_intent_change";
+    public static final String TAG ="BaseFragment" ;
     protected int currentPage = 0;
     protected ListView listView;
     protected GridView gridView;
@@ -82,11 +85,13 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     public void changeViewList() {  // Gọi phương thức để xoay giữa list view và grid view
         if (currentDisplayedList) {
             listView.setVisibility(View.VISIBLE);
+            listView.setOnItemClickListener(this);
             gridView.setVisibility(View.INVISIBLE);
             currentDisplayedList = false;
         } else {
             listView.setVisibility(View.INVISIBLE);
             gridView.setVisibility(View.VISIBLE);
+            gridView.setOnItemClickListener(this);
             currentDisplayedList = true;
         }
     }
@@ -142,18 +147,18 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // Click vào item list view
-    }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         // Nhấn giữ vào item list view
-
-        Intent intent = new Intent(getActivity(), ContentGameActivity.class);
+        Intent intent = new Intent(getActivity().getBaseContext(), ContentGameActivity.class);
         intent.putExtra(KEY_INTENT_CHANGE, arrItemListView.get(position));
         getActivity().startActivity(intent);
         return false;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
     }
 }
