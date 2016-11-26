@@ -65,7 +65,7 @@ public class ListViewAdapter extends ArrayAdapter {
                 .load(itemListView.getImageUrl())
                 .placeholder(R.drawable.loading)
                 .config(Bitmap.Config.RGB_565)
-                .error(R.drawable.warning)
+                .error(R.drawable.offine)
                 .into(viewHolder.image);
         viewHolder.name.setText(itemListView.getName());
         viewHolder.type.setText(itemListView.getType());

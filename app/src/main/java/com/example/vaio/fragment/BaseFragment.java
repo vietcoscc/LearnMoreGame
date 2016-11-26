@@ -72,13 +72,12 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         gridView.setOnItemLongClickListener(this);
 
         changeViewList();
-        changeViewList();
         if (!MainActivity.isNetworkAvailable(context)) {
             getDataFromDatabase(typeId);
         }
     }
 
-    public void changeViewList() {
+    public void changeViewList() {  // Gọi phương thức để xoay giữa list view và grid view
         if (currentDisplayedList) {
             listView.setVisibility(View.VISIBLE);
             gridView.setVisibility(View.INVISIBLE);
