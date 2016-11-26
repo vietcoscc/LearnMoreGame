@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.example.vaio.adapter.GridViewAdapter;
 import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.database.MyDatabase;
+import com.example.vaio.learnmoregame.ContentGameActivity;
 import com.example.vaio.learnmoregame.MainActivity;
 import com.example.vaio.learnmoregame.R;
 import com.example.vaio.model_object.ItemListView;
@@ -72,6 +73,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         gridView.setOnItemLongClickListener(this);
 
         changeViewList();
+
         if (!MainActivity.isNetworkAvailable(context)) {
             getDataFromDatabase(typeId);
         }
@@ -149,6 +151,9 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         // Nhấn giữ vào item list view
 
+        Intent intent = new Intent(getActivity(), ContentGameActivity.class);
+        intent.putExtra(KEY_INTENT_CHANGE, arrItemListView.get(position));
+        getActivity().startActivity(intent);
         return false;
     }
 }
