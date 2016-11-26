@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">LearnMoreGame</string>
-    <string name="item1">Item1</string>
-    <string name="item2">Item2</string>
+    <string name="item1">List view</string>
+    <string name="item2">Grid view</string>
     <string name="gameName">Assasin\'s Creed</string>
     <string name="gameType">Nhập vai, hành động</string>
     <string name="date">23 Oct 1996</string>

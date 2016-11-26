@@ -3,7 +3,6 @@ package com.example.vaio.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -11,8 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.vaio.adapter.GridViewAdapter;
 import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.database.MyDatabase;
 import com.example.vaio.learnmoregame.ContentGameActivity;
@@ -24,18 +26,21 @@ import com.example.vaio.parser.JsoupParser;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by vaio on 11/24/2016.
  */
 
-public class BaseFragment extends Fragment implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener {
+
+public class BaseFragment extends Fragment implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+
     public static final int WHAT = 1;
     public static final String KEY_INTENT_CHANGE = "key_intent_change";
+    public static final String TAG ="BaseFragment" ;
     protected int currentPage = 0;
     protected ListView listView;
-    protected ListViewAdapter adapter;
+    protected GridView gridView;
+    protected ListViewAdapter listViewAdapter;
+    protected GridViewAdapter gridViewAdapter;
     protected ArrayList<ItemListView> arrItemListView = new ArrayList<>();
     private Context context;
     private MyDatabase database;
@@ -43,6 +48,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     private int lastTotalItemCount = -1;
     private String link;
     private int typeId;
+    private boolean currentDisplayedList = true; // true hiển thị list view . false hiển thị gridview
 
     public BaseFragment(Context context) {
         this.context = context;
@@ -53,12 +59,40 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     protected void initViews(View v, final String link, final int typeId) {
         this.link = link;
         this.typeId = typeId;
+
         listView = (ListView) v.findViewById(R.id.listView);
-        adapter = new ListViewAdapter(getContext(), arrItemListView);
-        listView.setAdapter(adapter);
+        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView);
+        listView.setAdapter(listViewAdapter);
+        listView.setOnScrollListener(this);
         listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
+
+
+        gridView = (GridView) v.findViewById(R.id.gridView);
+        gridViewAdapter = new GridViewAdapter(getContext(), arrItemListView);
+        gridView.setAdapter(gridViewAdapter);
+        gridView.setOnScrollListener(this);
+        gridView.setOnItemClickListener(this);
+        gridView.setOnItemLongClickListener(this);
+
+        changeViewList();
+
         if (!MainActivity.isNetworkAvailable(context)) {
             getDataFromDatabase(typeId);
+        }
+    }
+
+    public void changeViewList() {  // Gọi phương thức để xoay giữa list view và grid view
+        if (currentDisplayedList) {
+            listView.setVisibility(View.VISIBLE);
+            listView.setOnItemClickListener(this);
+            gridView.setVisibility(View.INVISIBLE);
+            currentDisplayedList = false;
+        } else {
+            listView.setVisibility(View.INVISIBLE);
+            gridView.setVisibility(View.VISIBLE);
+            gridView.setOnItemClickListener(this);
+            currentDisplayedList = true;
         }
     }
 
@@ -70,14 +104,16 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
                 arrItemListView.add(arrTmp.get(i));
             }
         }
-        adapter.notifyDataSetChanged();
+        listViewAdapter.notifyDataSetChanged();
+        gridViewAdapter.notifyDataSetChanged();
     }
 
     public void getDataFromWeb(String link, int typeId) {
         currentPage++;
         JsoupParser jsoupParser = new JsoupParser(handler, typeId);
         jsoupParser.execute(link + currentPage);
-        adapter.notifyDataSetChanged();
+//        listViewAdapter.notifyDataSetChanged();
+//        gridViewAdapter.notifyDataSetChanged();
     }
 
     protected Handler handler = new Handler() {
@@ -91,7 +127,8 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
                 }
                 arrItemListView.addAll((Collection<? extends ItemListView>) msg.obj);
                 database.insertArrItemListView((ArrayList<ItemListView>) msg.obj);
-                adapter.notifyDataSetChanged();
+                listViewAdapter.notifyDataSetChanged();
+                gridViewAdapter.notifyDataSetChanged();
             }
         }
     };
@@ -110,10 +147,18 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         }
     }
 
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getActivity(), ContentGameActivity.class);
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        // Nhấn giữ vào item list view
+        Intent intent = new Intent(getActivity().getBaseContext(), ContentGameActivity.class);
         intent.putExtra(KEY_INTENT_CHANGE, arrItemListView.get(position));
         getActivity().startActivity(intent);
+        return false;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
     }
 }

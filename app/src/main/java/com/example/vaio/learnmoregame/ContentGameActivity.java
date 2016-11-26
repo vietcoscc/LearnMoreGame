@@ -113,7 +113,7 @@ public class ContentGameActivity extends YouTubeBaseActivity {
         tvDate = (TextView) findViewById(R.id.date);
         tvView = (TextView) findViewById(R.id.views);
 
-//        Log.e(TAG,itemListView.getName());
+        Log.e(TAG,itemListView.getName());
 
         tvName.setText(itemListView.getName());
         tvNameGame.setText(itemListView.getName());

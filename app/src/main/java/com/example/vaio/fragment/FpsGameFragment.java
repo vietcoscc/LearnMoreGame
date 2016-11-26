@@ -39,7 +39,7 @@ public class FpsGameFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_fps_game, container, false);
 
         initViews(v,LINK,TYPE_ID);
-        listView.setOnScrollListener(this);
+
         return v;
     }
 
