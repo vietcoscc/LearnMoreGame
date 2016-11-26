@@ -32,15 +32,15 @@ public class ParserInformationGame extends AsyncTask<String, Void, ItemInforGame
     private Context context;
     private ProgressDialog progressDialog;
 
-    public ParserInformationGame(Context context,Handler handler) {
-        this.context=context;
+    public ParserInformationGame(Context context, Handler handler) {
+        this.context = context;
         this.handler = handler;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog=new ProgressDialog(context);
+        progressDialog = new ProgressDialog(context);
         progressDialog.show();
     }
 
@@ -48,7 +48,7 @@ public class ParserInformationGame extends AsyncTask<String, Void, ItemInforGame
     protected ItemInforGame doInBackground(String... params) {
         String link = params[0];
         ItemInforGame itemInforGame = null;
-        String urlBackgroup="";
+        String urlBackgroup = "";
         String introduce = "";//Thông tin game
         String linkYoutube = "";//link youtube
         String configuration = "";//cấu hình game
@@ -56,11 +56,17 @@ public class ParserInformationGame extends AsyncTask<String, Void, ItemInforGame
         try {
             Document document = Jsoup.connect(link).get();
 
-            urlBackgroup="http://www.linkneverdie.com/" +document.getElementById("hinhnenimg").attr("src");
+            urlBackgroup = "http://www.linkneverdie.com/" + document.getElementById("hinhnenimg").attr("src");
 
             Elements elementLinkYoutube = document.select("div.fluid-width-video-wrapper");
             String linkYoutubeTemp = elementLinkYoutube.get(0).select("iframe").attr("src");
-            linkYoutube = linkYoutubeTemp.substring(linkYoutubeTemp.lastIndexOf("/")+1, linkYoutubeTemp.lastIndexOf("?"));
+            int indexLinkYoutubeFirst = linkYoutubeTemp.lastIndexOf("/");
+            int indexLinkYoutubeLater = linkYoutubeTemp.lastIndexOf("?");
+            if (indexLinkYoutubeLater == -1 || indexLinkYoutubeLater <= indexLinkYoutubeFirst) {
+                linkYoutube = linkYoutubeTemp.substring(indexLinkYoutubeFirst + 1);
+            } else {
+                linkYoutube = linkYoutubeTemp.substring(indexLinkYoutubeFirst + 1, indexLinkYoutubeLater);
+            }
 
             Elements elementsImage = document.select("div.slide");
             for (int i = 0; i < elementsImage.size(); i++) {
@@ -74,13 +80,13 @@ public class ParserInformationGame extends AsyncTask<String, Void, ItemInforGame
             document.select("p").append("br2n2");
             Element elementConfiguration = document.getElementById("cauhinhdiv");
             configuration = elementConfiguration.text().replace("br2n2", "\n");
-            configuration=configuration.replace("br2n","");
+            configuration = configuration.replace("br2n", "");
 
-
-            itemInforGame = new ItemInforGame(urlBackgroup,introduce, linkYoutube, configuration, arrUrlImage);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        itemInforGame = new ItemInforGame(urlBackgroup, introduce, linkYoutube, configuration, arrUrlImage);
 
         return itemInforGame;
     }

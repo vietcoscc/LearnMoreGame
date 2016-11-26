@@ -62,10 +62,11 @@ public class ContentGameActivity extends YouTubeBaseActivity {
 
                 final ItemInforGame itemInforGame = (ItemInforGame) msg.obj;
 
-                Picasso.with(getBaseContext()).load(itemInforGame.getUrlBackgroup()).into(ivFirst);
+                Picasso.with(getBaseContext()).load(itemListView.getImageUrl()).into(ivFirst);
 
                 arrImage.clear();
-                arrImage.addAll(itemInforGame.getArrUrlImage());
+                if (itemInforGame.getArrUrlImage().size() > 0)
+                    arrImage.addAll(itemInforGame.getArrUrlImage());
                 imageViewPagerAdapter.notifyDataSetChanged();
 
                 tvContent.setText(itemInforGame.getIntroduce());
@@ -91,25 +92,26 @@ public class ContentGameActivity extends YouTubeBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_game);
         arrImage = new ArrayList<>();
-        imageViewPagerAdapter = new ImageViewPagerAdapter(this,arrImage);
+        imageViewPagerAdapter = new ImageViewPagerAdapter(this, arrImage);
 
-        Intent intent=getIntent();
-        itemListView= (ItemListView) intent.getSerializableExtra(BaseFragment.KEY_INTENT_CHANGE);
+        Intent intent = getIntent();
+        itemListView = (ItemListView) intent.getSerializableExtra(BaseFragment.KEY_INTENT_CHANGE);
 
         initViews();
-
-        parserInformationGame = new ParserInformationGame(this,handler);
+//        Log.e(TAG,"https://"+itemListView.getDetailsUrl());
+        parserInformationGame = new ParserInformationGame(this, handler);
         parserInformationGame.execute("https://"+itemListView.getDetailsUrl());
+//        parserInformationGame.execute("https://linkneverdie.com/GameDetail/?baivietId=726&ten=Killing-Floor-2-2016");
     }
 
     private void initViews() {
 //        Intent intent=getIntent();
 //        ItemListView itemListView= (ItemListView) intent.getSerializableExtra(BaseFragment.KEY_INTENT_CHANGE);
 
-        tvName= (TextView) findViewById(R.id.tv_name);
-        tvNameGame= (TextView) findViewById(R.id.tv_name_game);
-        tvDate= (TextView) findViewById(R.id.date);
-        tvView= (TextView) findViewById(R.id.views);
+        tvName = (TextView) findViewById(R.id.tv_name);
+        tvNameGame = (TextView) findViewById(R.id.tv_name_game);
+        tvDate = (TextView) findViewById(R.id.date);
+        tvView = (TextView) findViewById(R.id.views);
 
 //        Log.e(TAG,itemListView.getName());
 
@@ -120,11 +122,11 @@ public class ContentGameActivity extends YouTubeBaseActivity {
 
         tvContent = (TextView) findViewById(R.id.tv_content_game);
         tvConfiguration = (TextView) findViewById(R.id.tv_configuration);
-        ivFirst= (ImageView) findViewById(R.id.iv_image_fisrt);
+        ivFirst = (ImageView) findViewById(R.id.iv_image_fisrt);
         videoView = (YouTubePlayerView) findViewById(R.id.vv_video_game);
 
         viewPagerImage = (ViewPager) findViewById(R.id.iv_view_pager);
-        circlePageIndicator= (CirclePageIndicator) findViewById(R.id.indicator);
+        circlePageIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         viewPagerImage.setAdapter(imageViewPagerAdapter);
         circlePageIndicator.setViewPager(viewPagerImage);
     }
