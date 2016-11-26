@@ -7,17 +7,26 @@ import java.util.ArrayList;
  */
 
 public class ItemInforGame {
-
+    private String urlBackgroup;
     private String introduce;
     private String linkYoutube;
     private String configuration;
     private ArrayList<String> arrUrlImage;
 
-    public ItemInforGame(String introduce, String linkYoutube, String configuration, ArrayList<String> arrUrlImage) {
+    public ItemInforGame(String urlBackgroup, String introduce, String linkYoutube, String configuration, ArrayList<String> arrUrlImage) {
+        this.urlBackgroup = urlBackgroup;
         this.introduce = introduce;
         this.linkYoutube = linkYoutube;
         this.configuration = configuration;
         this.arrUrlImage = arrUrlImage;
+    }
+
+    public String getUrlBackgroup() {
+        return urlBackgroup;
+    }
+
+    public void setUrlBackgroup(String urlBackgroup) {
+        this.urlBackgroup = urlBackgroup;
     }
 
     public String getIntroduce() {

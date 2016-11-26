@@ -2,11 +2,10 @@ package com.example.vaio.fragment;
 
 
 import android.content.Context;
-import android.net.ConnectivityManager;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -24,14 +23,15 @@ import com.example.vaio.parser.JsoupParser;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by vaio on 11/24/2016.
  */
 
+
 public class BaseFragment extends Fragment implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+
     public static final int WHAT = 1;
+    public static final String KEY_INTENT_CHANGE = "key_intent_change";
     protected int currentPage = 0;
     protected ListView listView;
     protected GridView gridView;
@@ -148,6 +148,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         // Nhấn giữ vào item list view
+
         return false;
     }
 }

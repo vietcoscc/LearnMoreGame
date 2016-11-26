@@ -1,10 +1,12 @@
 package com.example.vaio.model_object;
 
+import java.io.Serializable;
+
 /**
  * Created by vaio on 11/23/2016.
  */
 
-public class ItemListView {
+public class ItemListView implements Serializable{
     private int typeId; // Xác định item nằm trong listView nào
     private String imageUrl;
     private String name;

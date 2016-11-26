@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "com.example.vaio.learnmoregame"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -17,6 +17,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+
+    }
+
+    apply plugin: 'android'
+
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://github.com/dahlgren/vpi-aar/raw/master"
+        }
+    }
+
+
+
 }
 
 dependencies {
@@ -27,6 +46,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
     compile 'org.jsoup:jsoup:1.10.1'
+    compile 'com.viewpagerindicator:library:2.4.2-SNAPSHOT'
     compile 'com.android.support:design:25.0.0'
     compile 'org.jsoup:jsoup:1.10.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
