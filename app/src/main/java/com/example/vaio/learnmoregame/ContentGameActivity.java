@@ -1,5 +1,6 @@
 package com.example.vaio.learnmoregame;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,7 +14,9 @@ import android.widget.TextView;
 
 
 import com.example.vaio.adapter.ImageViewPagerAdapter;
+import com.example.vaio.fragment.BaseFragment;
 import com.example.vaio.model_object.ItemInforGame;
+import com.example.vaio.model_object.ItemListView;
 import com.example.vaio.parser.ParserInformationGame;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -34,6 +37,7 @@ public class ContentGameActivity extends YouTubeBaseActivity {
     private static final String TAG = "ContentGameActivity";
     private ParserInformationGame parserInformationGame;
 
+    private TextView tvName;
     private TextView tvNameGame;
     private TextView tvDate;
     private TextView tvView;
@@ -47,6 +51,8 @@ public class ContentGameActivity extends YouTubeBaseActivity {
     private ImageViewPagerAdapter imageViewPagerAdapter;
 
     private ArrayList<String> arrImage;
+
+    private ItemListView itemListView;
 
     private Handler handler = new Handler() {
         @Override
@@ -86,12 +92,31 @@ public class ContentGameActivity extends YouTubeBaseActivity {
         setContentView(R.layout.activity_content_game);
         arrImage = new ArrayList<>();
         imageViewPagerAdapter = new ImageViewPagerAdapter(this,arrImage);
+
+        Intent intent=getIntent();
+        itemListView= (ItemListView) intent.getSerializableExtra(BaseFragment.KEY_INTENT_CHANGE);
+
         initViews();
+
         parserInformationGame = new ParserInformationGame(this,handler);
-        parserInformationGame.execute("http://linkneverdie.com/GameDetail/?baivietId=2602&ten=Dishonored-2-2016");
+        parserInformationGame.execute("https://"+itemListView.getDetailsUrl());
     }
 
     private void initViews() {
+//        Intent intent=getIntent();
+//        ItemListView itemListView= (ItemListView) intent.getSerializableExtra(BaseFragment.KEY_INTENT_CHANGE);
+
+        tvName= (TextView) findViewById(R.id.tv_name);
+        tvNameGame= (TextView) findViewById(R.id.tv_name_game);
+        tvDate= (TextView) findViewById(R.id.date);
+        tvView= (TextView) findViewById(R.id.views);
+
+        Log.e(TAG,itemListView.getName());
+
+        tvName.setText(itemListView.getName());
+        tvNameGame.setText(itemListView.getName());
+        tvDate.setText(itemListView.getDate());
+        tvView.setText(itemListView.getViews());
 
         tvContent = (TextView) findViewById(R.id.tv_content_game);
         tvConfiguration = (TextView) findViewById(R.id.tv_configuration);

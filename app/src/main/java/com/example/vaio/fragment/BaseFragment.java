@@ -2,6 +2,7 @@ package com.example.vaio.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.Message;
@@ -9,10 +10,12 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.database.MyDatabase;
+import com.example.vaio.learnmoregame.ContentGameActivity;
 import com.example.vaio.learnmoregame.MainActivity;
 import com.example.vaio.learnmoregame.R;
 import com.example.vaio.model_object.ItemListView;
@@ -27,8 +30,9 @@ import static android.content.ContentValues.TAG;
  * Created by vaio on 11/24/2016.
  */
 
-public class BaseFragment extends Fragment implements AbsListView.OnScrollListener {
+public class BaseFragment extends Fragment implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener {
     public static final int WHAT = 1;
+    public static final String KEY_INTENT_CHANGE = "key_intent_change";
     protected int currentPage = 0;
     protected ListView listView;
     protected ListViewAdapter adapter;
@@ -52,6 +56,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         listView = (ListView) v.findViewById(R.id.listView);
         adapter = new ListViewAdapter(getContext(), arrItemListView);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
         if (!MainActivity.isNetworkAvailable(context)) {
             getDataFromDatabase(typeId);
         }
@@ -103,5 +108,12 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
             getDataFromWeb(link, typeId);
             lastTotalItemCount = totalItemCount;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getActivity(), ContentGameActivity.class);
+        intent.putExtra(KEY_INTENT_CHANGE, arrItemListView.get(position));
+        getActivity().startActivity(intent);
     }
 }
