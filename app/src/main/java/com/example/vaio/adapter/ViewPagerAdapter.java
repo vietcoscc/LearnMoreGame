@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.vaio.database.MyDatabase;
+//import com.example.vaio.database.MyDatabase;
 import com.example.vaio.fragment.ActionGameFragment;
 import com.example.vaio.fragment.FpsGameFragment;
 import com.example.vaio.fragment.OpenWorldFragment;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private int tabCount;
     private String pageTitle[] = {"Action", "FPS", "Open world", "Survival", "TPS"};
-    private MyDatabase database;
+//    private MyDatabase database;
     private Context context;
 
     public ViewPagerAdapter(Context context, FragmentManager fm, int tabCount) {
