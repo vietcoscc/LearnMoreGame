@@ -138,7 +138,9 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
         videoView = (YouTubePlayerView) findViewById(R.id.vv_video_game);
 
         viewPagerImage = (ViewPager) findViewById(R.id.iv_view_pager);
+
         circlePageIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
+
         viewPagerImage.setAdapter(imageViewPagerAdapter);
         circlePageIndicator.setViewPager(viewPagerImage);
     }
