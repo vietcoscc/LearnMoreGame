@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private SearchView searchView;
@@ -132,8 +133,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         // viewPager
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
+        viewPagerAdapter = new ViewPagerAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager, true);
         viewPager.setOffscreenPageLimit(5);
 
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     introductionDialog.show(getFragmentManager(), "Introduction");
                     break;
                 case 5:
-                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
                     alertDialog.setTitle("Thoát ứng dụng");
                     alertDialog.setMessage("Bạn có chắc chắn muốn thoát ?");
                     alertDialog.setPositiveButton("Chắc chắn", new DialogInterface.OnClickListener() {
@@ -201,8 +202,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         //
-        MenuItem item = menu.findItem(R.id.item1);
-        item.setOnMenuItemClickListener(this);
+        MenuItem item1 = menu.findItem(R.id.item1);
+        item1.setOnMenuItemClickListener(this);
+        MenuItem item2 = menu.findItem(R.id.item2);
+        item2.setOnMenuItemClickListener(this);
         //
         MenuItem searchView = menu.findItem(R.id.searchView);
         this.searchView = (SearchView) searchView.getActionView();
@@ -234,6 +237,15 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.item1:
+                viewPagerAdapter.changListViewList();
+                break;
+            case R.id.item2:
+                viewPagerAdapter.changeGridViewList();
+                break;
+        }
         return false;
     }
 }

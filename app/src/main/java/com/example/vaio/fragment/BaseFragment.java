@@ -35,7 +35,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     public static final int WHAT = 1;
     public static final String KEY_INTENT_CHANGE = "key_intent_change";
-    public static final String TAG ="BaseFragment" ;
+    public static final String TAG = "BaseFragment";
     private static final int REQUEST_CODE_WATCH = 112;
     protected int currentPage = 0;
     protected ListView listView;
@@ -49,7 +49,6 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     private int lastTotalItemCount = -1;
     private String link;
     private int typeId;
-    private boolean currentDisplayedList = true; // true hiển thị list view . false hiển thị gridview
 
     public BaseFragment(Context context) {
         this.context = context;
@@ -76,25 +75,21 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         gridView.setOnItemClickListener(this);
         gridView.setOnItemLongClickListener(this);
 
-        changeViewList();
+        changeListViewList();
 
         if (!MainActivity.isNetworkAvailable(context)) {
             getDataFromDatabase(typeId);
         }
     }
 
-    public void changeViewList() {  // Gọi phương thức để xoay giữa list view và grid view
-        if (currentDisplayedList) {
-            listView.setVisibility(View.VISIBLE);
-            listView.setOnItemClickListener(this);
-            gridView.setVisibility(View.INVISIBLE);
-            currentDisplayedList = false;
-        } else {
-            listView.setVisibility(View.INVISIBLE);
-            gridView.setVisibility(View.VISIBLE);
-            gridView.setOnItemClickListener(this);
-            currentDisplayedList = true;
-        }
+    public void changeGridViewList() {  // Gọi phương thức để xoay giữa list view và grid view
+        listView.setVisibility(View.INVISIBLE);
+        gridView.setVisibility(View.VISIBLE);
+    }
+
+    public void changeListViewList() {  // Gọi phương thức để xoay giữa list view và grid view
+        listView.setVisibility(View.VISIBLE);
+        gridView.setVisibility(View.INVISIBLE);
     }
 
     public void getDataFromDatabase(int typeId) {

@@ -45,7 +45,20 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         survivalGameFragment = new SurvivalGameFragment(context);
         tpsGameFragment = new TpsGameFragment(context);
     }
-
+    public void changeGridViewList(){
+        actionGameFragment.changeGridViewList();
+        fpsGameFragment.changeGridViewList();
+        openWorldFragment.changeGridViewList();
+        survivalGameFragment.changeGridViewList();
+        tpsGameFragment.changeGridViewList();
+    }
+    public void changListViewList(){
+        actionGameFragment.changeListViewList();
+        fpsGameFragment.changeListViewList();
+        openWorldFragment.changeListViewList();
+        survivalGameFragment.changeListViewList();
+        tpsGameFragment.changeListViewList();
+    }
     @Override
     public CharSequence getPageTitle(int position) {
         return pageTitle[position];
