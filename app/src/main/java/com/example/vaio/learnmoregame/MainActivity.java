@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
+import com.example.vaio.database.MyDatabase;
 import com.example.vaio.dialog.IntroductionDialog;
 import com.example.vaio.parser.JsoupParser;
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private LinearLayout linearLayoutListMain;
     private IntroductionDialog introductionDialog;
 
-
+    private MyDatabase database;
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
     private ArrayList<Integer> arrCountContentDrawerLayout;
     private RecyclerView listViewDrawerLayout;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        database = new MyDatabase(this);
         //khoi tao
         arrCountContentDrawerLayout = new ArrayList<>();
         initCount();
