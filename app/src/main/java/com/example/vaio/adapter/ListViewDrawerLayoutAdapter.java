@@ -21,11 +21,11 @@ public class ListViewDrawerLayoutAdapter extends ArrayAdapter {
     private LayoutInflater inflater;
     //danh sach icon
     private static final Integer[] arrIcon = {
-            R.drawable.clock, R.drawable.like_drawerlayout, R.drawable.like_drawerlayout
+            R.drawable.clock, R.drawable.like_drawerlayout, R.drawable.settings, R.drawable.feedback, R.drawable.help, R.drawable.logout
     };
     //danh sach noi dung
     private static final String[] arrContent = {
-            "Danh sách xem sau", "Danh sách yêu thích", "fdsfas"
+            "Danh sách xem sau", "Danh sách yêu thích", "Cài đặt", "Phản hồi", "Giới thiệu", "Thoát"
     };
     //danh sach so dem
     private ArrayList<Integer> arrCountContent;

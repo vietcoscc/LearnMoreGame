@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,11 +33,12 @@ import java.util.ArrayList;
  * Created by TungMai on 24/11/2016.
  */
 
-public class ContentGameActivity extends YouTubeBaseActivity {
+public class ContentGameActivity extends YouTubeBaseActivity implements View.OnClickListener {
     private static final String YOUTUBE_KEY = "AIzaSyDSct6gyum4wKmQ_LjAa9shTbPBzfE41uU";
     private static final String TAG = "ContentGameActivity";
     private ParserInformationGame parserInformationGame;
 
+    private ImageView ivBack;
     private TextView tvName;
     private TextView tvNameGame;
     private TextView tvDate;
@@ -108,12 +110,15 @@ public class ContentGameActivity extends YouTubeBaseActivity {
 //        Intent intent=getIntent();
 //        ItemListView itemListView= (ItemListView) intent.getSerializableExtra(BaseFragment.KEY_INTENT_CHANGE);
 
+        ivBack= (ImageView) findViewById(R.id.iv_back);
+        ivBack.setOnClickListener(this);
         tvName = (TextView) findViewById(R.id.tv_name);
+
         tvNameGame = (TextView) findViewById(R.id.tv_name_game);
         tvDate = (TextView) findViewById(R.id.date);
         tvView = (TextView) findViewById(R.id.views);
 
-        Log.e(TAG,itemListView.getName());
+//        Log.e(TAG,itemListView.getName());
 
         tvName.setText(itemListView.getName());
         tvNameGame.setText(itemListView.getName());
@@ -129,5 +134,10 @@ public class ContentGameActivity extends YouTubeBaseActivity {
         circlePageIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         viewPagerImage.setAdapter(imageViewPagerAdapter);
         circlePageIndicator.setViewPager(viewPagerImage);
+    }
+
+    @Override
+    public void onClick(View view) {
+        finish();
     }
 }

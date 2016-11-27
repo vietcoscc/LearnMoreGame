@@ -36,6 +36,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     public static final int WHAT = 1;
     public static final String KEY_INTENT_CHANGE = "key_intent_change";
     public static final String TAG ="BaseFragment" ;
+    private static final int REQUEST_CODE_WATCH = 112;
     protected int currentPage = 0;
     protected ListView listView;
     protected GridView gridView;
@@ -160,5 +161,11 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

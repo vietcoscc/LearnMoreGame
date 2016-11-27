@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -14,10 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private SearchView searchView;
+    private LinearLayout linearLayoutListMain;
 
 
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
@@ -74,11 +80,25 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     private void initMainViews() {
+        linearLayoutListMain= (LinearLayout) findViewById(R.id.linear_list_main);
         //drawerLayout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+//                Toast.makeText(getBaseContext(),"open",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+//                Toast.makeText(getBaseContext(),"close",Toast.LENGTH_SHORT).show();
+            }
+        };
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
         // tabLayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab());
