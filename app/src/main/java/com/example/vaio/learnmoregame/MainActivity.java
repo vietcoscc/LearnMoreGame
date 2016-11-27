@@ -22,7 +22,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,31 +29,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 
-import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
-import com.example.vaio.database.MyDatabase;
 import com.example.vaio.dialog.IntroductionDialog;
-import com.example.vaio.fragment.BaseFragment;
-import com.example.vaio.model_object.ItemListView;
 import com.example.vaio.parser.JsoupParser;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener {
 
     public static final String ACTION_GAME = "Action";
     public static final String FPS_GAME = "FPS";
     public static final String OPEN_WORLD_GAME = "Open world";
     public static final String SURVIVAL_GAME = "Survival";
     public static final String TPS_GAME = "TPS";
-    private static final String TAG = "MainActivity";
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -63,19 +56,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ActionBarDrawerToggle drawerToggle;
     private SearchView searchView;
     private LinearLayout linearLayoutListMain;
-    private LinearLayout linearLayoutListChosseFromDrawerLayout;
     private IntroductionDialog introductionDialog;
 
 
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
     private ArrayList<Integer> arrCountContentDrawerLayout;
     private RecyclerView listViewDrawerLayout;
-
-    //thao tac khi thuc hien drawer layout
-    private MyDatabase database;
-    private ListView lvChosseFromDrawerLayout;
-    private ListViewAdapter lvChosseAdapter;
-    private ArrayList<ItemListView> arrItemListViews;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -85,22 +71,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setContentView(R.layout.activity_main);
         //khoi tao
         arrCountContentDrawerLayout = new ArrayList<>();
-        database = new MyDatabase(this);
         initCount();
         listViewDrawerLayoutAdapter = new ListViewDrawerLayoutAdapter(arrCountContentDrawerLayout);
+
         initToolbar();
-
-        //
-        arrItemListViews = new ArrayList<>();
-        lvChosseAdapter = new ListViewAdapter(this, arrItemListViews);
-
         initMainViews();
 
     }
 
     //khoi tao dem so tren drawerlayout
     private void initCount() {
-        arrCountContentDrawerLayout.add(0);
         arrCountContentDrawerLayout.add(12);
         arrCountContentDrawerLayout.add(0);
     }
@@ -116,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initMainViews() {
-        //set title action bar
 
         final Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -124,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         window.setStatusBarColor(ContextCompat.getColor(getBaseContext(), R.color.black));
 
         linearLayoutListMain = (LinearLayout) findViewById(R.id.linear_list_main);
-        linearLayoutListChosseFromDrawerLayout = (LinearLayout) findViewById(R.id.fragment_list_drawerlayout);
         //drawerLayout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name) {
@@ -166,18 +144,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         listViewDrawerLayout.setLayoutManager(horizontalLayoutManagaer);
         listViewDrawerLayout.setAdapter(listViewDrawerLayoutAdapter);
         listViewDrawerLayoutAdapter.setOnItemClickListener(clickDrawerLayout);
-
-        //listview chon tu drawerlayout
-        lvChosseFromDrawerLayout = (ListView) findViewById(R.id.lv_chosse_drawerlayout);
-        lvChosseFromDrawerLayout.setAdapter(lvChosseAdapter);
-        lvChosseFromDrawerLayout.setOnItemClickListener(this);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intent = new Intent(this, ContentGameActivity.class);
-        intent.putExtra(BaseFragment.KEY_INTENT_CHANGE, arrItemListViews.get(i));
-        startActivity(intent);
     }
 
     private ListViewDrawerLayoutAdapter.OnItemClickListener clickDrawerLayout = new ListViewDrawerLayoutAdapter.OnItemClickListener() {
@@ -185,14 +151,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         public void onItemClick(View view, int position) {
             switch (position) {
                 case 0:
-                    linearLayoutListMain.setVisibility(View.VISIBLE);
-                    linearLayoutListChosseFromDrawerLayout.setVisibility(View.INVISIBLE);
                     break;
                 case 1:
-                    chooseDrawerLayout(1);
                     break;
                 case 2:
-                    chooseDrawerLayout(2);
                     break;
                 case 3:
                     break;
@@ -229,24 +191,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         }
     };
-
-    //cap nhat listview khi chon item trong drawerlayout
-    //action hanh dong cua item tren drawerlayout
-    //1:xem,2:thich
-    private void chooseDrawerLayout(int action) {
-        linearLayoutListMain.setVisibility(View.INVISIBLE);
-        linearLayoutListChosseFromDrawerLayout.setVisibility(View.VISIBLE);
-        if (action == 1) {
-            arrItemListViews.clear();
-            arrItemListViews.addAll(database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LATER));
-            lvChosseAdapter.notifyDataSetChanged();
-        } else if (action == 2) {
-            arrItemListViews.clear();
-            arrItemListViews.addAll(database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LIKE));
-            Log.e(TAG,arrItemListViews.size()+"");
-            lvChosseAdapter.notifyDataSetChanged();
-        }
-    }
 
     public static boolean isNetworkAvailable(Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
@@ -304,6 +248,4 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
         return false;
     }
-
-
 }
