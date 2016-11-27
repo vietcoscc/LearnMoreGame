@@ -35,8 +35,8 @@ public class IntroductionDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.dialog_introduction, container, false);
         getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
         getDialog().getWindow().setStatusBarColor(ContextCompat.getColor(getDialog().getContext(), R.color.color_ds));
+//        getActivity().getWindow().setElevation(0);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.AnimationDialogIntroduction;
         initViews();
         return view;

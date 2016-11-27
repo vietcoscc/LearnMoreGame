@@ -21,11 +21,12 @@ import java.util.ArrayList;
 public class ListViewDrawerLayoutAdapter extends RecyclerView.Adapter<ListViewDrawerLayoutAdapter.ItemView> {
     //danh sach icon
     private static final Integer[] arrIcon = {
+            R.drawable.home,
             R.drawable.clock, R.drawable.like_drawerlayout, R.drawable.settings, R.drawable.feedback, R.drawable.help, R.drawable.logout
     };
     //danh sach noi dung
     private static final String[] arrContent = {
-            "Danh sách xem sau", "Danh sách yêu thích", "Cài đặt", "Phản hồi", "Giới thiệu", "Thoát"
+            "Trang chính", "Danh sách xem sau", "Danh sách yêu thích", "Cài đặt", "Phản hồi", "Giới thiệu", "Thoát"
     };
     //danh sach so dem
     private ArrayList<Integer> arrCountContent;
@@ -54,7 +55,7 @@ public class ListViewDrawerLayoutAdapter extends RecyclerView.Adapter<ListViewDr
             holder.tvCount.setText("");
         } else if (arrCountContent.get(position) > 0)
             holder.tvCount.setText(arrCountContent.get(position) + "");
-        if(arrCountContent.size()-1==position)  holder.vPart.setVisibility(View.VISIBLE);
+        if (arrCountContent.size() - 1 == position) holder.vPart.setVisibility(View.VISIBLE);
     }
 
     @Override
