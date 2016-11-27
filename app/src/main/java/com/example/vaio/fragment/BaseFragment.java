@@ -152,15 +152,15 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         // Nhấn giữ vào item list view
-        Intent intent = new Intent(getActivity().getBaseContext(), ContentGameActivity.class);
-        intent.putExtra(KEY_INTENT_CHANGE, arrItemListView.get(position));
-        getActivity().startActivity(intent);
+
         return false;
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+        Intent intent = new Intent(getActivity().getBaseContext(), ContentGameActivity.class);
+        intent.putExtra(KEY_INTENT_CHANGE, arrItemListView.get(i));
+        getActivity().startActivity(intent);
     }
 
     @Override
