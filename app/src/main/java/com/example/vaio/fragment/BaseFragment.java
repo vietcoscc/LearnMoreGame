@@ -67,7 +67,6 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
 
-
         gridView = (GridView) v.findViewById(R.id.gridView);
         gridViewAdapter = new GridViewAdapter(getContext(), arrItemListView);
         gridView.setAdapter(gridViewAdapter);
