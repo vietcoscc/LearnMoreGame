@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -20,6 +23,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -49,21 +54,24 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
     private ArrayList<Integer> arrCountContentDrawerLayout;
-    private ListView listViewDrawerLayout;
+    private RecyclerView listViewDrawerLayout;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //khoi tao
-        arrCountContentDrawerLayout=new ArrayList<>();
+        arrCountContentDrawerLayout = new ArrayList<>();
         initCount();
-        listViewDrawerLayoutAdapter=new ListViewDrawerLayoutAdapter(this,arrCountContentDrawerLayout);
+        listViewDrawerLayoutAdapter = new ListViewDrawerLayoutAdapter(arrCountContentDrawerLayout);
 
         initToolbar();
         initMainViews();
 
     }
+
     //khoi tao dem so tren drawerlayout
     private void initCount() {
         arrCountContentDrawerLayout.add(12);
@@ -79,21 +87,29 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initMainViews() {
-        linearLayoutListMain= (LinearLayout) findViewById(R.id.linear_list_main);
+
+        final Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(getBaseContext(), R.color.black));
+
+        linearLayoutListMain = (LinearLayout) findViewById(R.id.linear_list_main);
         //drawerLayout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name){
-            @Override
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name) {
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
 //                Toast.makeText(getBaseContext(),"open",Toast.LENGTH_SHORT).show();
+
+
             }
 
-            @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
 //                Toast.makeText(getBaseContext(),"close",Toast.LENGTH_SHORT).show();
+//                window.setStatusBarColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
@@ -110,19 +126,53 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         // viewPager
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
         viewPager.setOffscreenPageLimit(5);
 
         //listview cua drawerlayout
-        listViewDrawerLayout= (ListView) findViewById(R.id.lv_drawerlayout);
+        listViewDrawerLayout = (RecyclerView) findViewById(R.id.lv_drawerlayout);
+        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
+        listViewDrawerLayout.setLayoutManager(horizontalLayoutManagaer);
         listViewDrawerLayout.setAdapter(listViewDrawerLayoutAdapter);
+        listViewDrawerLayoutAdapter.setOnItemClickListener(clickDrawerLayout);
     }
+
+    private ListViewDrawerLayoutAdapter.OnItemClickListener clickDrawerLayout = new ListViewDrawerLayoutAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            Toast.makeText(getBaseContext(), position + "", Toast.LENGTH_SHORT).show();
+            switch (position) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    finish();
+                    System.exit(0);
+                    break;
+            }
+            drawerLayout.closeDrawers();
+        }
+
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
+
     public static boolean isNetworkAvailable(Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

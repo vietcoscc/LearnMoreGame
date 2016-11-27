@@ -2,6 +2,7 @@ package com.example.vaio.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
  * Created by TungMai on 25/11/2016.
  */
 
-public class ListViewDrawerLayoutAdapter extends ArrayAdapter {
-    private LayoutInflater inflater;
+public class ListViewDrawerLayoutAdapter extends RecyclerView.Adapter<ListViewDrawerLayoutAdapter.ItemView> {
     //danh sach icon
     private static final Integer[] arrIcon = {
             R.drawable.clock, R.drawable.like_drawerlayout, R.drawable.settings, R.drawable.feedback, R.drawable.help, R.drawable.logout
@@ -30,45 +30,68 @@ public class ListViewDrawerLayoutAdapter extends ArrayAdapter {
     //danh sach so dem
     private ArrayList<Integer> arrCountContent;
 
-    public ListViewDrawerLayoutAdapter(Context context, ArrayList<Integer> objects) {
-        super(context, R.layout.item_listview_drawerlayout);
-        inflater = LayoutInflater.from(context);
-        arrCountContent = objects;
+    private OnItemClickListener mItemClickListener;
+
+
+    public ListViewDrawerLayoutAdapter(ArrayList<Integer> arrCountContent) {
+        this.arrCountContent = arrCountContent;
     }
 
     @Override
-    public int getCount() {
+    public ItemView onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_listview_drawerlayout, parent, false);
+
+        return new ItemView(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(ItemView holder, int position) {
+        holder.ivIcon.setImageResource(arrIcon[position]);
+        holder.tvContent.setText(arrContent[position]);
+        holder.vPart.setVisibility(View.INVISIBLE);
+        if (arrCountContent.size() - 1 < position || arrCountContent.get(position) == 0) {
+            holder.tvCount.setText("");
+        } else if (arrCountContent.get(position) > 0)
+            holder.tvCount.setText(arrCountContent.get(position) + "");
+        if(arrCountContent.size()-1==position)  holder.vPart.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public int getItemCount() {
         return arrContent.length;
     }
 
-    @NonNull
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.item_listview_drawerlayout, parent, false);
-            viewHolder.ivIcon = (ImageView) convertView.findViewById(R.id.iv_icon_listview_drawerlayout);
-            viewHolder.tvContent = (TextView) convertView.findViewById(R.id.tv_content_listview_drawerlayout);
-            viewHolder.tvCount = (TextView) convertView.findViewById(R.id.tv_count_listview_drawerlayout);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+    public class ItemView extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public ImageView ivIcon;
+        public TextView tvContent;
+        public TextView tvCount;
+        public View vPart;
+
+        public ItemView(View view) {
+            super(view);
+            ivIcon = (ImageView) view.findViewById(R.id.iv_icon_listview_drawerlayout);
+            tvContent = (TextView) view.findViewById(R.id.tv_content_listview_drawerlayout);
+            tvCount = (TextView) view.findViewById(R.id.tv_count_listview_drawerlayout);
+            vPart = view.findViewById(R.id.view_part);
+            view.setOnClickListener(this);
         }
 
-        viewHolder.ivIcon.setImageResource(arrIcon[position]);
-        viewHolder.tvContent.setText(arrContent[position]);
-        if (arrCountContent.size() - 1 < position || arrCountContent.get(position) == 0)
-            viewHolder.tvCount.setText("");
-        else if (arrCountContent.get(position) > 0)
-            viewHolder.tvCount.setText(arrCountContent.get(position) + "");
-        return convertView;
-
+        @Override
+        public void onClick(View view) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(view, getPosition());
+            }
+        }
     }
 
-    class ViewHolder {
-        ImageView ivIcon;
-        TextView tvContent;
-        TextView tvCount;
+
+    public interface OnItemClickListener extends View.OnClickListener {
+        void onItemClick(View view, int position);
     }
+
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
+    }
+
 }
