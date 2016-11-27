@@ -1,6 +1,9 @@
 package com.example.vaio.learnmoregame;
 
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -12,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
+import com.example.vaio.dialog.IntroductionDialog;
 import com.example.vaio.parser.JsoupParser;
 
 import java.util.ArrayList;
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ActionBarDrawerToggle drawerToggle;
     private SearchView searchView;
     private LinearLayout linearLayoutListMain;
+    private IntroductionDialog introductionDialog;
 
 
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
@@ -142,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ListViewDrawerLayoutAdapter.OnItemClickListener clickDrawerLayout = new ListViewDrawerLayoutAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            Toast.makeText(getBaseContext(), position + "", Toast.LENGTH_SHORT).show();
             switch (position) {
                 case 0:
                     break;
@@ -153,10 +158,28 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 case 3:
                     break;
                 case 4:
+                    introductionDialog = new IntroductionDialog();
+                    introductionDialog.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_NoActionBar);
+                    introductionDialog.show(getFragmentManager(), "Introduction");
                     break;
                 case 5:
-                    finish();
-                    System.exit(0);
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
+                    alertDialog.setTitle("Thoát ứng dụng");
+                    alertDialog.setMessage("Bạn có chắc chắn muốn thoát ?");
+                    alertDialog.setPositiveButton("Chắc chắn", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                            System.exit(0);
+                        }
+                    });
+                    alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    alertDialog.show();
                     break;
             }
             drawerLayout.closeDrawers();

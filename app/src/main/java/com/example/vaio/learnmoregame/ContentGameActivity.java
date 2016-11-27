@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
     private YouTubePlayerView videoView;
     private ViewPager viewPagerImage;
     private CirclePageIndicator circlePageIndicator;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     private ImageViewPagerAdapter imageViewPagerAdapter;
 
@@ -64,7 +66,9 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
 
                 final ItemInforGame itemInforGame = (ItemInforGame) msg.obj;
 
-                Picasso.with(getBaseContext()).load(itemListView.getImageUrl()).into(ivFirst);
+                Log.e(TAG,itemInforGame.getUrlBackgroup());
+
+                Picasso.with(getBaseContext()).load(itemInforGame.getUrlBackgroup()).into(ivFirst);
 
                 arrImage.clear();
                 if (itemInforGame.getArrUrlImage().size() > 0)
@@ -103,7 +107,7 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
 //        Log.e(TAG,"https://"+itemListView.getDetailsUrl());
         parserInformationGame = new ParserInformationGame(this, handler);
         parserInformationGame.execute("https://"+itemListView.getDetailsUrl());
-//        parserInformationGame.execute("https://linkneverdie.com/GameDetail/?baivietId=726&ten=Killing-Floor-2-2016");
+//        parserInformationGame.execute("http://www.linkneverdie.com/GameDetail/?baivietId=2632&ten=Rad-Rodgers-World-One-2016");
     }
 
     private void initViews() {
@@ -112,7 +116,6 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
 
         ivBack= (ImageView) findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
-        tvName = (TextView) findViewById(R.id.tv_name);
 
         tvNameGame = (TextView) findViewById(R.id.tv_name_game);
         tvDate = (TextView) findViewById(R.id.date);
@@ -120,10 +123,14 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
 
 //        Log.e(TAG,itemListView.getName());
 
-        tvName.setText(itemListView.getName());
         tvNameGame.setText(itemListView.getName());
         tvDate.setText(itemListView.getDate());
         tvView.setText(itemListView.getViews());
+
+        collapsingToolbarLayout= (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle(itemListView.getName());
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.collapsedappbar);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.expandedappbar);
 
         tvContent = (TextView) findViewById(R.id.tv_content_game);
         tvConfiguration = (TextView) findViewById(R.id.tv_configuration);
