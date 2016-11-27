@@ -107,6 +107,7 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
 //        Log.e(TAG,"https://"+itemListView.getDetailsUrl());
         parserInformationGame = new ParserInformationGame(this, handler);
         parserInformationGame.execute("https://"+itemListView.getDetailsUrl());
+//        parserInformationGame.execute("http://www.linkneverdie.com/GameDetail/?baivietId=2632&ten=Rad-Rodgers-World-One-2016");
     }
 
     private void initViews() {

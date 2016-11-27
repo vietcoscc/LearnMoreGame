@@ -117,11 +117,11 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
             super.handleMessage(msg);
             if (msg.what == WHAT) {
                 if (MainActivity.isNetworkAvailable(context) && !isCleared) {
-                    database.deleteAllItemListView(msg.arg1,MyDatabase.TB_NAME_LIST_MAIN);
+                    database.deleteAllItemListView(msg.arg1);
                     isCleared = true;
                 }
                 arrItemListView.addAll((Collection<? extends ItemListView>) msg.obj);
-                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj,MyDatabase.TB_NAME_LIST_MAIN);
+                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj);
                 listViewAdapter.notifyDataSetChanged();
                 gridViewAdapter.notifyDataSetChanged();
             }

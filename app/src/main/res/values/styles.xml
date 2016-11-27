@@ -11,7 +11,6 @@
     <style name="AnimationDialogIntroduction">
         <item name="android:windowEnterAnimation">@anim/tranlanste_dialog_introduction_open</item>
         <item name="android:windowExitAnimation">@anim/tranlanste_dialog_introduction_close</item>
-
     </style>
 
     <style name="expandedappbar" parent="@android:style/TextAppearance.Medium">
