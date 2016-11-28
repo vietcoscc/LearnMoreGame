@@ -1,25 +1,37 @@
 package com.example.vaio.database;
 
+import android.app.ActivityOptions;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 
+import com.example.vaio.fragment.ActionGameFragment;
+import com.example.vaio.fragment.FpsGameFragment;
+import com.example.vaio.fragment.OpenWorldFragment;
+import com.example.vaio.fragment.SurvivalGameFragment;
+import com.example.vaio.fragment.TpsGameFragment;
+import com.example.vaio.learnmoregame.MainActivity;
 import com.example.vaio.model_object.ItemListView;
+import com.example.vaio.parser.JsoupParser;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by vaio on 11/25/2016.
  */
 
 public class MyDatabase {
-
+    public static final int WHAT = 1;
+    public static final String TB_NAME_ALL_DATA = "alldatagamelist";
     public static final String TB_NAME_LIST_MAIN = "gamelist";
     public static final String TB_NAME_LIST_LATER = "listlater";
     public static final String TB_NAME_LIST_LIKE = "listlike";
@@ -38,6 +50,7 @@ public class MyDatabase {
     private SQLiteDatabase database;
 
     private ArrayList<ItemListView> arrAllItemListView = new ArrayList<>();
+
 
     public MyDatabase(Context context) {
         this.context = context;
@@ -76,6 +89,8 @@ public class MyDatabase {
             e.printStackTrace();
         }
     }
+
+   // 59 29 13 12 23
 
     public ArrayList<ItemListView> getDataFromGameList() {
         openDatabase();
@@ -136,23 +151,23 @@ public class MyDatabase {
         return arrAllItemListView;
     }
 
-        public void insertArrItemListView (ArrayList < ItemListView > arrItemListView, String
-        nameTable){
-            openDatabase();
-            for (int i = 0; i < arrItemListView.size(); i++) {
-                ItemListView itemListView = arrItemListView.get(i);
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(TYPE_ID, itemListView.getTypeId());
-                contentValues.put(IMAGE_URL, itemListView.getImageUrl());
-                contentValues.put(NAME, itemListView.getName());
-                contentValues.put(TYPE, itemListView.getType());
-                contentValues.put(DATE, itemListView.getDate());
-                contentValues.put(DETAILS_URL, itemListView.getDetailsUrl());
-                contentValues.put(VIEWS, itemListView.getViews());
-                database.insert(nameTable, null, contentValues);
-            }
-            closeDatabase();
+    public void insertArrItemListView(ArrayList<ItemListView> arrItemListView, String
+            nameTable) {
+        openDatabase();
+        for (int i = 0; i < arrItemListView.size(); i++) {
+            ItemListView itemListView = arrItemListView.get(i);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TYPE_ID, itemListView.getTypeId());
+            contentValues.put(IMAGE_URL, itemListView.getImageUrl());
+            contentValues.put(NAME, itemListView.getName());
+            contentValues.put(TYPE, itemListView.getType());
+            contentValues.put(DATE, itemListView.getDate());
+            contentValues.put(DETAILS_URL, itemListView.getDetailsUrl());
+            contentValues.put(VIEWS, itemListView.getViews());
+            database.insert(nameTable, null, contentValues);
         }
+        closeDatabase();
+    }
 
     public void deleteAllItemListView(int typeId, String nameTable) {
         openDatabase();

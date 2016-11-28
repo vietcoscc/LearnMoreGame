@@ -31,9 +31,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ import android.widget.Toast;
 import com.example.vaio.adapter.GridViewAdapter;
 import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
+import com.example.vaio.adapter.ListViewSearchAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
 import com.example.vaio.database.MyDatabase;
 import com.example.vaio.dialog.IntroductionDialog;
@@ -50,7 +53,7 @@ import com.example.vaio.parser.JsoupParser;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener, AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
 
     public static final String ACTION_GAME = "Action";
     public static final String FPS_GAME = "FPS";
@@ -72,14 +75,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
     private ArrayList<Integer> arrCountContentDrawerLayout;
     private RecyclerView listViewDrawerLayout;
-
+    private ListView lvSearch;
     //thao tac khi thuc hien drawer layout
     private MyDatabase database;
     private ListView lvChosseFromDrawerLayout;
     private ListViewAdapter lvChosseAdapter;
-    private ArrayList<ItemListView> arrItemListViews;
+    private ArrayList<ItemListView> arrItemListViews = new ArrayList<>();
+    private ArrayList<ItemListView> arrAllItemListViews;
     private GridView gridView;
     private GridViewAdapter gridViewAdapter;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -93,9 +98,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         initCount();
         listViewDrawerLayoutAdapter = new ListViewDrawerLayoutAdapter(arrCountContentDrawerLayout);
         initToolbar();
-
+        arrAllItemListViews = database.getDataFromGameList();
         //
-        arrItemListViews = new ArrayList<>();
         lvChosseAdapter = new ListViewAdapter(this, arrItemListViews);
         gridViewAdapter = new GridViewAdapter(this, arrItemListViews);
 
@@ -180,6 +184,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         gridView = (GridView) findViewById(R.id.gridView);
         gridView.setAdapter(gridViewAdapter);
         gridView.setOnItemClickListener(this);
+
+        // list view cua thanh search
+
+        lvSearch = (ListView) findViewById(R.id.lvSearch);
     }
 
 
@@ -262,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public static boolean isNetworkAvailable(Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
-    }
+    } // Kiểm tra kết nối mạng trên máy
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -274,8 +282,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         MenuItem item2 = menu.findItem(R.id.item2);
         item2.setOnMenuItemClickListener(this);
         //
-        MenuItem searchView = menu.findItem(R.id.searchView);
-        this.searchView = (SearchView) searchView.getActionView();
+        MenuItem itemSearch = menu.findItem(R.id.searchView);
+        this.searchView = (SearchView) itemSearch.getActionView();
+        searchView.setOnQueryTextListener(this);
         //
 
         return super.onCreateOptionsMenu(menu);
@@ -321,4 +330,45 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (newText.isEmpty()) {
+            lvSearch.setVisibility(View.GONE);
+        } else {
+            lvSearch.setVisibility(View.VISIBLE);
+        }
+        arrAllItemListViews = database.getDataFromGameList();
+        ArrayList<ItemListView> arrSearchResult = new ArrayList<>();
+        for (int i = 0; i < arrAllItemListViews.size(); i++) {
+            if (arrAllItemListViews.get(i).getName().toLowerCase().contains(newText.toLowerCase()) && !isExistInArray(arrSearchResult, arrAllItemListViews.get(i).getName().toLowerCase())) {
+                arrSearchResult.add(arrAllItemListViews.get(i));
+            }
+        }
+        ListViewSearchAdapter adapter = new ListViewSearchAdapter(this, arrSearchResult);
+        lvSearch.setAdapter(adapter);
+        return false;
+    }
+
+    private boolean isExistInArray(ArrayList<ItemListView> arrSearchResult, String name) {
+        for (int i = 0; i < arrSearchResult.size(); i++) {
+            if (name.toLowerCase().equals(arrSearchResult.get(i).getName().toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.onActionViewCollapsed();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

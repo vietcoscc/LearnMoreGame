@@ -43,6 +43,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     protected ListViewAdapter listViewAdapter;
     protected GridViewAdapter gridViewAdapter;
     protected ArrayList<ItemListView> arrItemListView = new ArrayList<>();
+    protected ArrayList<ItemListView> arrAllDataFromWeb = new ArrayList<>();
     private Context context;
     private MyDatabase database;
     private boolean isCleared = false;
@@ -54,6 +55,11 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         this.context = context;
         database = new MyDatabase(context);
 
+//        database.deleteAllItemListView(ActionGameFragment.TYPE_ID,MyDatabase.TB_NAME_ALL_DATA);
+//        database.deleteAllItemListView(FpsGameFragment.TYPE_ID,MyDatabase.TB_NAME_ALL_DATA);
+//        database.deleteAllItemListView(TpsGameFragment.TYPE_ID,MyDatabase.TB_NAME_ALL_DATA);
+//        database.deleteAllItemListView(SurvivalGameFragment.TYPE_ID,MyDatabase.TB_NAME_ALL_DATA);
+//        database.deleteAllItemListView(TpsGameFragment.TYPE_ID,MyDatabase.TB_NAME_ALL_DATA);
     }
 
     protected void initViews(View v, final String link, final int typeId) {
@@ -107,21 +113,37 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         currentPage++;
         JsoupParser jsoupParser = new JsoupParser(handler, typeId);
         jsoupParser.execute(link + currentPage);
-//        listViewAdapter.notifyDataSetChanged();
-//        gridViewAdapter.notifyDataSetChanged();
     }
 
+//    public void getAllDataFromWeb(String link, int typeId, int countPage) {
+//        for (int i = 1; i < countPage; i++) {
+//            JsoupParser jsoupParser = new JsoupParser(handler2, typeId);
+//            jsoupParser.execute(link + currentPage);
+//        }
+//    }
+//    protected Handler handler2 = new Handler() { // lấy toàn bộ dữ liệu từ web
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            if (msg.what == WHAT) {
+//                arrAllDataFromWeb.addAll((Collection<? extends ItemListView>) msg.obj);
+//                Log.e(TAG,arrAllDataFromWeb.size()+"");
+//                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj, MyDatabase.TB_NAME_ALL_DATA);
+//            }
+//        }
+//    };
     protected Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == WHAT) {
                 if (MainActivity.isNetworkAvailable(context) && !isCleared) {
-                    database.deleteAllItemListView(msg.arg1,MyDatabase.TB_NAME_LIST_MAIN);
+                    database.deleteAllItemListView(msg.arg1, MyDatabase.TB_NAME_LIST_MAIN);
                     isCleared = true;
                 }
+
                 arrItemListView.addAll((Collection<? extends ItemListView>) msg.obj);
-                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj,MyDatabase.TB_NAME_LIST_MAIN);
+                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj, MyDatabase.TB_NAME_LIST_MAIN);
                 listViewAdapter.notifyDataSetChanged();
                 gridViewAdapter.notifyDataSetChanged();
             }
