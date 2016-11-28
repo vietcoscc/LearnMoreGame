@@ -43,6 +43,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     protected ListViewAdapter listViewAdapter;
     protected GridViewAdapter gridViewAdapter;
     protected ArrayList<ItemListView> arrItemListView = new ArrayList<>();
+    protected ArrayList<ItemListView> arrAllDataFromWeb = new ArrayList<>();
     private Context context;
     private MyDatabase database;
     private boolean isCleared = false;
@@ -53,7 +54,6 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     public BaseFragment(Context context) {
         this.context = context;
         database = new MyDatabase(context);
-
     }
 
     protected void initViews(View v, final String link, final int typeId) {
@@ -61,7 +61,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         this.typeId = typeId;
 
         listView = (ListView) v.findViewById(R.id.listView);
-        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView,MainActivity.POPUP_MENU_IN_HOME);
+        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView);
         listView.setAdapter(listViewAdapter);
         listView.setOnScrollListener(this);
         listView.setOnItemClickListener(this);
@@ -107,8 +107,6 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         currentPage++;
         JsoupParser jsoupParser = new JsoupParser(handler, typeId);
         jsoupParser.execute(link + currentPage);
-//        listViewAdapter.notifyDataSetChanged();
-//        gridViewAdapter.notifyDataSetChanged();
     }
 
     protected Handler handler = new Handler() {
@@ -117,11 +115,13 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
             super.handleMessage(msg);
             if (msg.what == WHAT) {
                 if (MainActivity.isNetworkAvailable(context) && !isCleared) {
-                    database.deleteAllItemListView(msg.arg1,MyDatabase.TB_NAME_LIST_MAIN);
+                    database.deleteAllItemListView(msg.arg1, MyDatabase.TB_NAME_LIST_MAIN);
                     isCleared = true;
                 }
+
                 arrItemListView.addAll((Collection<? extends ItemListView>) msg.obj);
-                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj,MyDatabase.TB_NAME_LIST_MAIN);
+
+                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj,MyDatabase.TB_NAME_LIST_MAIN);database.insertArrItemListView((ArrayList<ItemListView>) msg.obj, MyDatabase.TB_NAME_LIST_MAIN);
                 listViewAdapter.notifyDataSetChanged();
                 gridViewAdapter.notifyDataSetChanged();
             }
