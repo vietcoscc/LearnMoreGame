@@ -169,6 +169,38 @@ public class MyDatabase {
         closeDatabase();
     }
 
+    public ArrayList<ItemListView> getDataDistinctFromGameTable(String nameTable) { // Lấy mảng không bị trùng game , loại bỏ type id chỉ quan tâm tên
+        openDatabase();
+        ArrayList<ItemListView> arrAllItemListView = new ArrayList<>();
+        String columns[] = {IMAGE_URL, NAME, TYPE, DATE, VIEWS, DETAILS_URL};
+        Cursor cursor = database.query(true, nameTable, columns, null, null, null, null, null, null);
+        cursor.moveToFirst();
+//        int idIndex = cursor.getColumnIndex(ID);
+//        int typeIdIndex = cursor.getColumnIndex(TYPE_ID);
+        int imageUrlIndex = cursor.getColumnIndex(IMAGE_URL);
+        int nameIndex = cursor.getColumnIndex(NAME);
+        int typeIndex = cursor.getColumnIndex(TYPE);
+        int dateIndex = cursor.getColumnIndex(DATE);
+        int viewsIndex = cursor.getColumnIndex(VIEWS);
+        int detailsUrlIndex = cursor.getColumnIndex(DETAILS_URL);
+        while (!cursor.isAfterLast()) {
+//            int typeId = cursor.getInt(typeIdIndex);
+            String imageUrl = cursor.getString(imageUrlIndex);
+            String name = cursor.getString(nameIndex);
+            String type = cursor.getString(typeIndex);
+            String date = cursor.getString(dateIndex);
+            String views = cursor.getString(viewsIndex);
+            String detailsUrl = cursor.getString(detailsUrlIndex);
+            int typeId = -1; // giá trị tạm để typeid không null
+            ItemListView itemListView = new ItemListView(typeId, imageUrl, name, type, date, views, detailsUrl);
+            arrAllItemListView.add(itemListView);
+            cursor.moveToNext();
+        }
+
+        closeDatabase();
+        return arrAllItemListView;
+    }
+
     public void deleteAllItemListView(int typeId, String nameTable) {
         openDatabase();
         String whereArgs[] = {typeId + ""};

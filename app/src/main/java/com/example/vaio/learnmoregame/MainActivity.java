@@ -342,10 +342,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             lvSearch.setVisibility(View.VISIBLE);
         }
-        arrAllItemListViews = database.getDataFromGameList();
+        arrAllItemListViews = database.getDataDistinctFromGameTable(MyDatabase.TB_NAME_LIST_MAIN);
         ArrayList<ItemListView> arrSearchResult = new ArrayList<>();
         for (int i = 0; i < arrAllItemListViews.size(); i++) {
-            if (arrAllItemListViews.get(i).getName().toLowerCase().contains(newText.toLowerCase()) && !isExistInArray(arrSearchResult, arrAllItemListViews.get(i).getName().toLowerCase())) {
+            if (arrAllItemListViews.get(i).getName().toLowerCase().contains(newText.toLowerCase())) {
                 arrSearchResult.add(arrAllItemListViews.get(i));
             }
         }
@@ -353,16 +353,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         lvSearch.setAdapter(adapter);
         return false;
     }
-
-    private boolean isExistInArray(ArrayList<ItemListView> arrSearchResult, String name) {
-        for (int i = 0; i < arrSearchResult.size(); i++) {
-            if (name.toLowerCase().equals(arrSearchResult.get(i).getName().toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {
