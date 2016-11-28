@@ -121,7 +121,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
                     isCleared = true;
                 }
                 arrItemListView.addAll((Collection<? extends ItemListView>) msg.obj);
-                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj);
+                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj,MyDatabase.TB_NAME_LIST_MAIN);
                 listViewAdapter.notifyDataSetChanged();
                 gridViewAdapter.notifyDataSetChanged();
             }
