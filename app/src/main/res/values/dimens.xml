@@ -5,4 +5,6 @@
     <dimen name="content_inset_start">300dp</dimen>
     <dimen name="image_width">100dp</dimen>
     <dimen name="image_height">100dp</dimen>
+    <dimen name="icon_more_width">25dp</dimen>
+    <dimen name="icon_more_height">20dp</dimen>
 </resources>

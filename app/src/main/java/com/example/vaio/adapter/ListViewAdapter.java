@@ -24,7 +24,7 @@ import java.util.List;
  * Created by vaio on 11/24/2016.
  */
 
-public class ListViewAdapter extends ArrayAdapter implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class ListViewAdapter extends ArrayAdapter implements View.OnClickListener{
     private static final String TAG = "ListViewAdapter";
     private Context context;
     private ArrayList<ItemListView> arrItemListView;
@@ -82,21 +82,16 @@ public class ListViewAdapter extends ArrayAdapter implements View.OnClickListene
     public void onClick(View view) {
         PopupMenu popupMenu = new PopupMenu(context,view);
         popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                // Click vào item của popUp menu yêu thích , xem sau , chia sẻ ....
+                return false;
+            }
+        });
         popupMenu.show();
     }
 
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-
-        // Click vào item của popUp menu yêu thích , xem sau , chia sẻ ....
-        return false;
-    }
-
-//    public boolean reachedEndOfList() {
-//        // can check if close or exactly at the end
-//        return currentPosition == getCount() - 1;
-//    }
 
     class ViewHolder {
         ImageView image;
