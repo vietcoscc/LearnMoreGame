@@ -5,10 +5,12 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.vaio.learnmoregame.R;
@@ -22,7 +24,7 @@ import java.util.List;
  * Created by vaio on 11/24/2016.
  */
 
-public class ListViewAdapter extends ArrayAdapter {
+public class ListViewAdapter extends ArrayAdapter implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private static final String TAG = "ListViewAdapter";
     private Context context;
     private ArrayList<ItemListView> arrItemListView;
@@ -55,6 +57,7 @@ public class ListViewAdapter extends ArrayAdapter {
             viewHolder.type = (TextView) v.findViewById(R.id.type);
             viewHolder.date = (TextView) v.findViewById(R.id.date);
             viewHolder.views = (TextView) v.findViewById(R.id.views);
+            viewHolder.popupMenu = (ImageView) v.findViewById(R.id.popupMenu);
             v.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) v.getTag();
@@ -71,7 +74,23 @@ public class ListViewAdapter extends ArrayAdapter {
         viewHolder.type.setText(itemListView.getType());
         viewHolder.date.setText(itemListView.getDate());
         viewHolder.views.setText(itemListView.getViews());
+        viewHolder.popupMenu.setOnClickListener(this);
         return v;
+    }
+
+    @Override
+    public void onClick(View view) {
+        PopupMenu popupMenu = new PopupMenu(context,view);
+        popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+
+        // Click vào item của popUp menu yêu thích , xem sau , chia sẻ ....
+        return false;
     }
 
 //    public boolean reachedEndOfList() {
@@ -85,5 +104,6 @@ public class ListViewAdapter extends ArrayAdapter {
         TextView type;
         TextView date;
         TextView views;
+        ImageView popupMenu;
     }
 }
