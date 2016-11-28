@@ -37,6 +37,8 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     public static final String KEY_INTENT_CHANGE = "key_intent_change";
     public static final String TAG = "BaseFragment";
     private static final int REQUEST_CODE_WATCH = 112;
+    public static final String KEY_ITEM_IS_LIKE = "key_item_is_like";
+    public static final String KEY_ITEM_IS_LATER = "key_item_is_later";
     protected int currentPage = 0;
     protected ListView listView;
     protected GridView gridView;
@@ -61,7 +63,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         this.typeId = typeId;
 
         listView = (ListView) v.findViewById(R.id.listView);
-        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView);
+        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView,MainActivity.POPUP_MENU_IN_HOME);
         listView.setAdapter(listViewAdapter);
         listView.setOnScrollListener(this);
         listView.setOnItemClickListener(this);
@@ -153,7 +155,25 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getActivity().getBaseContext(), ContentGameActivity.class);
+        boolean isLike = false;
+        boolean isLater = false;
+        ArrayList<ItemListView> arrItemListViewsLike = database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LIKE);
+        ArrayList<ItemListView> arrItemListViewsLater = database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LATER);
+        for (int count = 0; count < arrItemListViewsLike.size(); count++) {
+            if (arrItemListViewsLike.get(count).getName().equals(arrItemListView.get(i).getName())) {
+                isLike = true;
+                break;
+            }
+        }
+        for (int count = 0; count < arrItemListViewsLater.size(); count++) {
+            if (arrItemListViewsLater.get(count).getName().equals(arrItemListView.get(i).getName())) {
+                isLater = true;
+            }
+        }
+
         intent.putExtra(KEY_INTENT_CHANGE, arrItemListView.get(i));
+        intent.putExtra(KEY_ITEM_IS_LIKE,isLike);
+        intent.putExtra(KEY_ITEM_IS_LATER,isLater);
         getActivity().startActivity(intent);
     }
 

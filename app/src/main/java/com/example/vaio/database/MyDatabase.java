@@ -207,4 +207,24 @@ public class MyDatabase {
         database.delete(nameTable, TYPE_ID + " = ?", whereArgs);
         closeDatabase();
     }
+    public void insertItemListView(ItemListView itemListView, String nameTable) {
+        openDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TYPE_ID, itemListView.getTypeId());
+        contentValues.put(IMAGE_URL, itemListView.getImageUrl());
+        contentValues.put(NAME, itemListView.getName());
+        contentValues.put(TYPE, itemListView.getType());
+        contentValues.put(DATE, itemListView.getDate());
+        contentValues.put(DETAILS_URL, itemListView.getDetailsUrl());
+        contentValues.put(VIEWS, itemListView.getViews());
+        database.insert(nameTable, null, contentValues);
+        closeDatabase();
+    }
+    public void deleteItemListView(ItemListView itemListView, String nameTable) {
+        openDatabase();
+        String nameGame = itemListView.getName();
+        String whereArgs[] = {nameGame};
+        database.delete(nameTable, NAME + "= ? ", whereArgs);
+        closeDatabase();
+    }
 }

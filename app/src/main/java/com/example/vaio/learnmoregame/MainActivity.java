@@ -46,6 +46,7 @@ import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ListViewSearchAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
 import com.example.vaio.database.MyDatabase;
+import com.example.vaio.dialog.FeedbackDialog;
 import com.example.vaio.dialog.IntroductionDialog;
 import com.example.vaio.fragment.BaseFragment;
 import com.example.vaio.model_object.ItemListView;
@@ -61,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public static final String SURVIVAL_GAME = "Survival";
     public static final String TPS_GAME = "TPS";
     private static final String TAG = "MainActivity";
+
+    public static final int POPUP_MENU_IN_HOME = 0;
+    public static final int POPUP_MENU_IN_LIST_LIKE_AND_LATER = 1;
+
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -84,8 +89,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ArrayList<ItemListView> arrAllItemListViews;
     private GridView gridView;
     private GridViewAdapter gridViewAdapter;
-
-
+    //
+    private FeedbackDialog feedbackDialog;
+    private int chooseAdapter;
+    //
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         initToolbar();
         arrAllItemListViews = database.getDataFromGameList();
         //
-        lvChosseAdapter = new ListViewAdapter(this, arrItemListViews);
+        lvChosseAdapter = new ListViewAdapter(this, arrItemListViews,POPUP_MENU_IN_LIST_LIKE_AND_LATER);
         gridViewAdapter = new GridViewAdapter(this, arrItemListViews);
 
         initMainViews();
@@ -115,9 +122,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     private void initToolbar() {
-//        ActionBar actionBar = getSupportActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//    xx    actionBar.setTitle("");
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -207,19 +212,26 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     linearLayoutListChosseFromDrawerLayout.setVisibility(View.INVISIBLE);
                     break;
                 case 1:
+                    chooseAdapter=1;
                     chooseDrawerLayout(1);
                     break;
                 case 2:
+                    chooseAdapter=2;
                     chooseDrawerLayout(2);
                     break;
                 case 3:
                     break;
                 case 4:
+                    feedbackDialog=new FeedbackDialog();
+                    feedbackDialog.setStyle(DialogFragment.STYLE_NORMAL,android.R.style.Theme_Holo_Light_Dialog);
+                    feedbackDialog.show(getFragmentManager(),"Feedback");
+                    break;
+                case 5:
                     introductionDialog = new IntroductionDialog();
                     introductionDialog.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_NoActionBar);
                     introductionDialog.show(getFragmentManager(), "Introduction");
                     break;
-                case 5:
+                case 6:
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
                     alertDialog.setTitle("Thoát ứng dụng");
                     alertDialog.setMessage("Bạn có chắc chắn muốn thoát ?");
@@ -343,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             lvSearch.setVisibility(View.VISIBLE);
         }
         arrAllItemListViews = database.getDataDistinctFromGameTable(MyDatabase.TB_NAME_LIST_MAIN);
-        ArrayList<ItemListView> arrSearchResult = new ArrayList<>();
+        final ArrayList<ItemListView> arrSearchResult = new ArrayList<>();
         for (int i = 0; i < arrAllItemListViews.size(); i++) {
             if (arrAllItemListViews.get(i).getName().toLowerCase().contains(newText.toLowerCase())) {
                 arrSearchResult.add(arrAllItemListViews.get(i));
@@ -351,6 +363,17 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
         ListViewSearchAdapter adapter = new ListViewSearchAdapter(this, arrSearchResult);
         lvSearch.setAdapter(adapter);
+        lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, ContentGameActivity.class);
+                intent.putExtra(BaseFragment.KEY_INTENT_CHANGE, arrSearchResult.get(i));
+                if (!searchView.isIconified()) {
+                    searchView.onActionViewCollapsed();
+                }
+                startActivity(intent);
+            }
+        });
         return false;
     }
     @Override

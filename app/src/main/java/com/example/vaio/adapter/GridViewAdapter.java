@@ -57,14 +57,11 @@ public class GridViewAdapter extends BaseAdapter {
             v = inflater.inflate(R.layout.item_grid_view, parent, false);
             viewHolder.image = (ImageView) v.findViewById(R.id.image);
             viewHolder.name = (TextView) v.findViewById(R.id.name);
-//            viewHolder.type = (TextView) v.findViewById(R.id.type);
-//            viewHolder.date = (TextView) v.findViewById(R.id.date);
-//            viewHolder.views = (TextView) v.findViewById(R.id.views);
+
             v.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) v.getTag();
         }
-//        Log.e(TAG, itemListView.getImageUrl());
 
         Picasso.with(context)
                 .load(itemListView.getImageUrl())
@@ -73,17 +70,13 @@ public class GridViewAdapter extends BaseAdapter {
                 .error(R.drawable.warning)
                 .into(viewHolder.image);
         viewHolder.name.setText(itemListView.getName());
-//        viewHolder.type.setText(itemListView.getType());
-//        viewHolder.date.setText(itemListView.getDate());
-//        viewHolder.views.setText(itemListView.getViews());
+
         return v;
     }
 
     class ViewHolder {
         ImageView image;
         TextView name;
-//        TextView type;
-//        TextView date;
-//        TextView views;
+
     }
 }
