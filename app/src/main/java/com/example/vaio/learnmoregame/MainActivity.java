@@ -78,10 +78,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private MyDatabase database;
     private ListView lvChosseFromDrawerLayout;
     private ListViewAdapter lvChosseAdapter;
+    private ArrayList<ItemListView> arrItemListViews;
     private GridView gridView;
     private GridViewAdapter gridViewAdapter;
-    private ArrayList<ItemListView> arrItemListViews;
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -99,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         arrItemListViews = new ArrayList<>();
         lvChosseAdapter = new ListViewAdapter(this, arrItemListViews);
         gridViewAdapter = new GridViewAdapter(this, arrItemListViews);
+
         initMainViews();
 
     }
@@ -176,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         lvChosseFromDrawerLayout = (ListView) findViewById(R.id.lv_chosse_drawerlayout);
         lvChosseFromDrawerLayout.setAdapter(lvChosseAdapter);
         lvChosseFromDrawerLayout.setOnItemClickListener(this);
-        //gibview
-        gridView = (GridView) findViewById(R.id.gridView_chosse_drawerlayout);
+        //gridview
+        gridView = (GridView) findViewById(R.id.gridView);
         gridView.setAdapter(gridViewAdapter);
         gridView.setOnItemClickListener(this);
     }
@@ -206,13 +206,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 case 3:
                     break;
                 case 4:
-                    break;
-                case 5:
                     introductionDialog = new IntroductionDialog();
                     introductionDialog.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_NoActionBar);
                     introductionDialog.show(getFragmentManager(), "Introduction");
                     break;
-                case 6:
+                case 5:
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
                     alertDialog.setTitle("Thoát ứng dụng");
                     alertDialog.setMessage("Bạn có chắc chắn muốn thoát ?");
