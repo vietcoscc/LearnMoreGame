@@ -109,6 +109,7 @@ public class MyDatabase {
     public ArrayList<ItemListView> getDataFromGameTable(String nameTable) {
         openDatabase();
         ArrayList<ItemListView> arrAllItemListView = new ArrayList<>();
+        ArrayList<ItemListView> arrAllItemListViewTemp = new ArrayList<>();
         Cursor cursor = database.query(true, nameTable, null, null, null, null, null, null, null);
         cursor.moveToFirst();
 //        int idIndex = cursor.getColumnIndex(ID);
@@ -128,31 +129,54 @@ public class MyDatabase {
             String views = cursor.getString(viewsIndex);
             String detailsUrl = cursor.getString(detailsUrlIndex);
             ItemListView itemListView = new ItemListView(typeId, imageUrl, name, type, date, views, detailsUrl);
-            arrAllItemListView.add(itemListView);
+            arrAllItemListViewTemp.add(itemListView);
             cursor.moveToNext();
         }
-
         closeDatabase();
+        for(int i=arrAllItemListViewTemp.size()-1;i>=0;i--){
+            arrAllItemListView.add(arrAllItemListViewTemp.get(i));
+        }
         return arrAllItemListView;
     }
 
-        public void insertArrItemListView (ArrayList < ItemListView > arrItemListView, String
-        nameTable){
-            openDatabase();
-            for (int i = 0; i < arrItemListView.size(); i++) {
-                ItemListView itemListView = arrItemListView.get(i);
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(TYPE_ID, itemListView.getTypeId());
-                contentValues.put(IMAGE_URL, itemListView.getImageUrl());
-                contentValues.put(NAME, itemListView.getName());
-                contentValues.put(TYPE, itemListView.getType());
-                contentValues.put(DATE, itemListView.getDate());
-                contentValues.put(DETAILS_URL, itemListView.getDetailsUrl());
-                contentValues.put(VIEWS, itemListView.getViews());
-                database.insert(nameTable, null, contentValues);
-            }
-            closeDatabase();
+    public void insertArrItemListView(ArrayList<ItemListView> arrItemListView) {
+        openDatabase();
+        for (int i = 0; i < arrItemListView.size(); i++) {
+            ItemListView itemListView = arrItemListView.get(i);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TYPE_ID, itemListView.getTypeId());
+            contentValues.put(IMAGE_URL, itemListView.getImageUrl());
+            contentValues.put(NAME, itemListView.getName());
+            contentValues.put(TYPE, itemListView.getType());
+            contentValues.put(DATE, itemListView.getDate());
+            contentValues.put(DETAILS_URL, itemListView.getDetailsUrl());
+            contentValues.put(VIEWS, itemListView.getViews());
+            database.insert(TB_NAME_LIST_MAIN, null, contentValues);
         }
+        closeDatabase();
+    }
+
+    public boolean insertItemListView(ArrayList<ItemListView> arrItemListViews, ItemListView itemListView, String nameTable) {
+        String name = itemListView.getName();
+        for (int i = 0; i < arrItemListViews.size(); i++) {
+            if (arrItemListViews.get(i).getName().equals(name)) {
+                return false;
+            }
+        }
+
+        openDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TYPE_ID, itemListView.getTypeId());
+        contentValues.put(IMAGE_URL, itemListView.getImageUrl());
+        contentValues.put(NAME, itemListView.getName());
+        contentValues.put(TYPE, itemListView.getType());
+        contentValues.put(DATE, itemListView.getDate());
+        contentValues.put(DETAILS_URL, itemListView.getDetailsUrl());
+        contentValues.put(VIEWS, itemListView.getViews());
+        database.insert(nameTable, null, contentValues);
+        closeDatabase();
+        return true;
+    }
 
     public void deleteAllItemListView(int typeId, String nameTable) {
         openDatabase();
