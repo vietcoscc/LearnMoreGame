@@ -90,11 +90,11 @@ public class MyDatabase {
         }
     }
 
-    // 59 29 13 12 23
+   // 59 29 13 12 23
 
     public ArrayList<ItemListView> getDataFromGameList() {
         openDatabase();
-        Cursor cursor = database.query(TB_NAME_LIST_MAIN, null, null, null, null, null, null, null);
+        Cursor cursor = database.query(true, TB_NAME_LIST_MAIN, null, null, null, null, null, null, null);
         cursor.moveToFirst();
 //        int idIndex = cursor.getColumnIndex(ID);
         int typeIdIndex = cursor.getColumnIndex(TYPE_ID);

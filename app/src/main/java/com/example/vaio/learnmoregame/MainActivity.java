@@ -46,6 +46,7 @@ import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ListViewSearchAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
 import com.example.vaio.database.MyDatabase;
+import com.example.vaio.dialog.FeedbackDialog;
 import com.example.vaio.dialog.IntroductionDialog;
 import com.example.vaio.fragment.BaseFragment;
 import com.example.vaio.model_object.ItemListView;
@@ -70,7 +71,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private SearchView searchView;
     private LinearLayout linearLayoutListMain;
     private RelativeLayout linearLayoutListChosseFromDrawerLayout;
+
     private IntroductionDialog introductionDialog;
+    private FeedbackDialog feedbackDialog;
 
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
     private ArrayList<Integer> arrCountContentDrawerLayout;
@@ -215,11 +218,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 case 3:
                     break;
                 case 4:
+                    feedbackDialog=new FeedbackDialog();
+                    feedbackDialog.setStyle(DialogFragment.STYLE_NORMAL,android.R.style.Theme_Holo_Light_Dialog);
+                    feedbackDialog.show(getFragmentManager(),"Feedback");
+                    break;
+                case 5:
                     introductionDialog = new IntroductionDialog();
                     introductionDialog.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_NoActionBar);
                     introductionDialog.show(getFragmentManager(), "Introduction");
                     break;
-                case 5:
+                case 6:
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
                     alertDialog.setTitle("Thoát ứng dụng");
                     alertDialog.setMessage("Bạn có chắc chắn muốn thoát ?");
