@@ -61,7 +61,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         this.typeId = typeId;
 
         listView = (ListView) v.findViewById(R.id.listView);
-        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView);
+        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView,MainActivity.POPUP_MENU_IN_HOME);
         listView.setAdapter(listViewAdapter);
         listView.setOnScrollListener(this);
         listView.setOnItemClickListener(this);

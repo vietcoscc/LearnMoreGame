@@ -39,7 +39,7 @@ public class SurvivalGameFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_survival_game, container, false);
 
         initViews(v,LINK,TYPE_ID);
-
+//        getAllDataFromWeb(LINK,TYPE_ID,12);
         return v;
     }
 

@@ -39,7 +39,7 @@ public class OpenWorldFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_open_world_game, container, false);
 
         initViews(v,LINK,TYPE_ID);
-
+//        getAllDataFromWeb(LINK,TYPE_ID,13);
         return v;
     }
 

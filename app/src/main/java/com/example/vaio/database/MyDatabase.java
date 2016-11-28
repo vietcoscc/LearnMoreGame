@@ -133,7 +133,7 @@ public class MyDatabase {
             cursor.moveToNext();
         }
         closeDatabase();
-        for(int i=arrAllItemListViewTemp.size()-1;i>=0;i--){
+        for (int i = arrAllItemListViewTemp.size() - 1; i >= 0; i--) {
             arrAllItemListView.add(arrAllItemListViewTemp.get(i));
         }
         return arrAllItemListView;
@@ -156,14 +156,7 @@ public class MyDatabase {
         closeDatabase();
     }
 
-    public boolean insertItemListView(ArrayList<ItemListView> arrItemListViews, ItemListView itemListView, String nameTable) {
-        String name = itemListView.getName();
-        for (int i = 0; i < arrItemListViews.size(); i++) {
-            if (arrItemListViews.get(i).getName().equals(name)) {
-                return false;
-            }
-        }
-
+    public void insertItemListView(ItemListView itemListView, String nameTable) {
         openDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TYPE_ID, itemListView.getTypeId());
@@ -175,13 +168,20 @@ public class MyDatabase {
         contentValues.put(VIEWS, itemListView.getViews());
         database.insert(nameTable, null, contentValues);
         closeDatabase();
-        return true;
     }
 
     public void deleteAllItemListView(int typeId, String nameTable) {
         openDatabase();
         String whereArgs[] = {typeId + ""};
         database.delete(nameTable, TYPE_ID + " = ?", whereArgs);
+        closeDatabase();
+    }
+
+    public void deleteItemListView(ItemListView itemListView, String nameTable) {
+        openDatabase();
+        String nameGame = itemListView.getName();
+        String whereArgs[] = {nameGame};
+        database.delete(nameTable, NAME + "= ? ", whereArgs);
         closeDatabase();
     }
 }
