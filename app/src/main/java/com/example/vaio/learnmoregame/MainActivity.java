@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private RelativeLayout linearLayoutListChosseFromDrawerLayout;
     private IntroductionDialog introductionDialog;
 
-    private MyDatabase database;
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
     private ArrayList<Integer> arrCountContentDrawerLayout;
     private RecyclerView listViewDrawerLayout;
@@ -182,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         gridView.setAdapter(gridViewAdapter);
         gridView.setOnItemClickListener(this);
     }
+
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

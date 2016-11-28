@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/Indigo600"
             android:gravity="right"
             android:minHeight="?attr/actionBarSize"
             android:subtitleTextColor="#FFFFFFFF"
@@ -37,6 +37,9 @@
 
             <LinearLayout
                 android:id="@+id/linear_list_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
