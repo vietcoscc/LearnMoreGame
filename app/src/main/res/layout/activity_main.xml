@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/fragment_list_drawerlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -68,8 +68,21 @@
                 <ListView
                     android:id="@+id/lv_chosse_drawerlayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></ListView>
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"></ListView>
+
+                <GridView
+                    android:id="@+id/gridView_chosse_drawerlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:horizontalSpacing="@dimen/activity_horizontal_margin"
+                    android:numColumns="2"
+                    android:verticalSpacing="@dimen/activity_vertical_margin"
+                    android:visibility="invisible"></GridView>
+            </RelativeLayout>
         </RelativeLayout>
 
     </LinearLayout>

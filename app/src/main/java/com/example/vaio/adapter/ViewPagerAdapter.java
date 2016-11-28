@@ -52,6 +52,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         survivalGameFragment.changeGridViewList();
         tpsGameFragment.changeGridViewList();
     }
+
     public void changListViewList(){
         actionGameFragment.changeListViewList();
         fpsGameFragment.changeListViewList();

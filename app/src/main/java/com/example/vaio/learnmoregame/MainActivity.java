@@ -31,11 +31,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import com.example.vaio.adapter.GridViewAdapter;
 import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ActionBarDrawerToggle drawerToggle;
     private SearchView searchView;
     private LinearLayout linearLayoutListMain;
-    private LinearLayout linearLayoutListChosseFromDrawerLayout;
+    private RelativeLayout linearLayoutListChosseFromDrawerLayout;
     private IntroductionDialog introductionDialog;
 
 
@@ -75,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private MyDatabase database;
     private ListView lvChosseFromDrawerLayout;
     private ListViewAdapter lvChosseAdapter;
+    private GridView gridView;
+    private GridViewAdapter gridViewAdapter;
     private ArrayList<ItemListView> arrItemListViews;
 
 
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         //
         arrItemListViews = new ArrayList<>();
         lvChosseAdapter = new ListViewAdapter(this, arrItemListViews);
-
+        gridViewAdapter = new GridViewAdapter(this, arrItemListViews);
         initMainViews();
 
     }
@@ -124,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         window.setStatusBarColor(ContextCompat.getColor(getBaseContext(), R.color.black));
 
         linearLayoutListMain = (LinearLayout) findViewById(R.id.linear_list_main);
-        linearLayoutListChosseFromDrawerLayout = (LinearLayout) findViewById(R.id.fragment_list_drawerlayout);
+        linearLayoutListChosseFromDrawerLayout = (RelativeLayout) findViewById(R.id.fragment_list_drawerlayout);
         //drawerLayout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name) {
@@ -171,6 +176,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         lvChosseFromDrawerLayout = (ListView) findViewById(R.id.lv_chosse_drawerlayout);
         lvChosseFromDrawerLayout.setAdapter(lvChosseAdapter);
         lvChosseFromDrawerLayout.setOnItemClickListener(this);
+        //gibview
+        gridView = (GridView) findViewById(R.id.gridView_chosse_drawerlayout);
+        gridView.setAdapter(gridViewAdapter);
+        gridView.setOnItemClickListener(this);
     }
 
     @Override
@@ -197,11 +206,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 case 3:
                     break;
                 case 4:
+                    break;
+                case 5:
                     introductionDialog = new IntroductionDialog();
                     introductionDialog.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_NoActionBar);
                     introductionDialog.show(getFragmentManager(), "Introduction");
                     break;
-                case 5:
+                case 6:
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
                     alertDialog.setTitle("Thoát ứng dụng");
                     alertDialog.setMessage("Bạn có chắc chắn muốn thoát ?");
@@ -240,11 +251,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             arrItemListViews.clear();
             arrItemListViews.addAll(database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LATER));
             lvChosseAdapter.notifyDataSetChanged();
+            gridViewAdapter.notifyDataSetChanged();
         } else if (action == 2) {
             arrItemListViews.clear();
             arrItemListViews.addAll(database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LIKE));
-            Log.e(TAG,arrItemListViews.size()+"");
             lvChosseAdapter.notifyDataSetChanged();
+            gridViewAdapter.notifyDataSetChanged();
         }
     }
 
@@ -297,9 +309,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         switch (item.getItemId()) {
             case R.id.item1:
                 viewPagerAdapter.changListViewList();
+                lvChosseFromDrawerLayout.setVisibility(View.VISIBLE);
+                gridView.setVisibility(View.INVISIBLE);
                 break;
             case R.id.item2:
                 viewPagerAdapter.changeGridViewList();
+                lvChosseFromDrawerLayout.setVisibility(View.INVISIBLE);
+                gridView.setVisibility(View.VISIBLE);
                 break;
         }
         return false;
