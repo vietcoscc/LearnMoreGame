@@ -1,6 +1,7 @@
 package com.example.vaio.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -53,9 +54,11 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     private String link;
     private int typeId;
 
+
     public BaseFragment(Context context) {
         this.context = context;
         database = new MyDatabase(context);
+
     }
 
     protected void initViews(View v, final String link, final int typeId) {
@@ -63,7 +66,7 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         this.typeId = typeId;
 
         listView = (ListView) v.findViewById(R.id.listView);
-        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView,MainActivity.POPUP_MENU_IN_HOME);
+        listViewAdapter = new ListViewAdapter(getContext(), arrItemListView, MainActivity.POPUP_MENU_IN_HOME);
         listView.setAdapter(listViewAdapter);
         listView.setOnScrollListener(this);
         listView.setOnItemClickListener(this);
@@ -93,21 +96,26 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         gridView.setVisibility(View.INVISIBLE);
     }
 
-    public void getDataFromDatabase(int typeId) {
-        arrItemListView.clear();
-        ArrayList<ItemListView> arrTmp = database.getDataFromGameList();
-        for (int i = 0; i < arrTmp.size(); i++) {
-            if (arrTmp.get(i).getTypeId() == typeId) {
-                arrItemListView.add(arrTmp.get(i));
+    public void getDataFromDatabase(final int typeId) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                arrItemListView.clear();
+                ArrayList<ItemListView> arrTmp = database.getDataFromGameList();
+                for (int i = 0; i < arrTmp.size(); i++) {
+                    if (arrTmp.get(i).getTypeId() == typeId) {
+                        arrItemListView.add(arrTmp.get(i));
+                    }
+                }
+                listViewAdapter.notifyDataSetChanged();
+                gridViewAdapter.notifyDataSetChanged();
             }
-        }
-        listViewAdapter.notifyDataSetChanged();
-        gridViewAdapter.notifyDataSetChanged();
+        }).start();
     }
 
     public void getDataFromWeb(String link, int typeId) {
         currentPage++;
-        JsoupParser jsoupParser = new JsoupParser(handler, typeId);
+        JsoupParser jsoupParser = new JsoupParser(context,handler, typeId);
         jsoupParser.execute(link + currentPage);
     }
 
@@ -123,7 +131,8 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
                 arrItemListView.addAll((Collection<? extends ItemListView>) msg.obj);
 
-                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj,MyDatabase.TB_NAME_LIST_MAIN);database.insertArrItemListView((ArrayList<ItemListView>) msg.obj, MyDatabase.TB_NAME_LIST_MAIN);
+                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj, MyDatabase.TB_NAME_LIST_MAIN);
+                database.insertArrItemListView((ArrayList<ItemListView>) msg.obj, MyDatabase.TB_NAME_LIST_MAIN);
                 listViewAdapter.notifyDataSetChanged();
                 gridViewAdapter.notifyDataSetChanged();
             }
@@ -172,8 +181,8 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         }
 
         intent.putExtra(KEY_INTENT_CHANGE, arrItemListView.get(i));
-        intent.putExtra(KEY_ITEM_IS_LIKE,isLike);
-        intent.putExtra(KEY_ITEM_IS_LATER,isLater);
+        intent.putExtra(KEY_ITEM_IS_LIKE, isLike);
+        intent.putExtra(KEY_ITEM_IS_LATER, isLater);
         getActivity().startActivity(intent);
     }
 

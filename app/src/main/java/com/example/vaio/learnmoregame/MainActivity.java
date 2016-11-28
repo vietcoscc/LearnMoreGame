@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private LinearLayout linearLayoutListMain;
     private RelativeLayout linearLayoutListChosseFromDrawerLayout;
     private IntroductionDialog introductionDialog;
-
+    private TextView titleToolbar;
     private ListViewDrawerLayoutAdapter listViewDrawerLayoutAdapter;
     private ArrayList<Integer> arrCountContentDrawerLayout;
     private RecyclerView listViewDrawerLayout;
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private FeedbackDialog feedbackDialog;
     private int chooseAdapter;
     //
+
+    private boolean isOnHomePage = true;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         initToolbar();
         arrAllItemListViews = database.getDataFromGameList();
         //
-        lvChosseAdapter = new ListViewAdapter(this, arrItemListViews,POPUP_MENU_IN_LIST_LIKE_AND_LATER);
+        lvChosseAdapter = new ListViewAdapter(this, arrItemListViews, POPUP_MENU_IN_LIST_LIKE_AND_LATER);
         gridViewAdapter = new GridViewAdapter(this, arrItemListViews);
 
         initMainViews();
@@ -126,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Trang chủ");
+//        titleToolbar  = (TextView) findViewById(R.id.titleToolbar);
+//        titleToolbar.setText("Trang chủ");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -208,23 +215,32 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         public void onItemClick(View view, int position) {
             switch (position) {
                 case 0:
+                    isOnHomePage = true;
+                    searchView.setVisibility(View.VISIBLE);
+                    getSupportActionBar().setTitle("Trang chủ");
                     linearLayoutListMain.setVisibility(View.VISIBLE);
                     linearLayoutListChosseFromDrawerLayout.setVisibility(View.INVISIBLE);
                     break;
                 case 1:
-                    chooseAdapter=1;
+                    isOnHomePage = false;
+                    searchView.setVisibility(View.GONE);
+                    getSupportActionBar().setTitle("Danh sách xem sau");
+                    chooseAdapter = 1;
                     chooseDrawerLayout(1);
                     break;
                 case 2:
-                    chooseAdapter=2;
+                    isOnHomePage = false;
+                    searchView.setVisibility(View.GONE);
+                    getSupportActionBar().setTitle("Danh sách yêu thích");
+                    chooseAdapter = 2;
                     chooseDrawerLayout(2);
                     break;
                 case 3:
                     break;
                 case 4:
-                    feedbackDialog=new FeedbackDialog();
-                    feedbackDialog.setStyle(DialogFragment.STYLE_NORMAL,android.R.style.Theme_Holo_Light_Dialog);
-                    feedbackDialog.show(getFragmentManager(),"Feedback");
+                    feedbackDialog = new FeedbackDialog();
+                    feedbackDialog.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_Dialog);
+                    feedbackDialog.show(getFragmentManager(), "Feedback");
                     break;
                 case 5:
                     introductionDialog = new IntroductionDialog();
@@ -266,6 +282,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private void chooseDrawerLayout(int action) {
         linearLayoutListMain.setVisibility(View.INVISIBLE);
         linearLayoutListChosseFromDrawerLayout.setVisibility(View.VISIBLE);
+
+        lvChosseFromDrawerLayout.setVisibility(View.VISIBLE);
+        gridView.setVisibility(View.INVISIBLE);
+
         if (action == 1) {
             arrItemListViews.clear();
             arrItemListViews.addAll(database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LATER));
@@ -296,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         //
         MenuItem itemSearch = menu.findItem(R.id.searchView);
         this.searchView = (SearchView) itemSearch.getActionView();
+        itemSearch.collapseActionView();
         searchView.setOnQueryTextListener(this);
         //
 
@@ -325,7 +346,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.item1:
                 viewPagerAdapter.changListViewList();
@@ -337,6 +357,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 lvChosseFromDrawerLayout.setVisibility(View.INVISIBLE);
                 gridView.setVisibility(View.VISIBLE);
                 break;
+        }
+        if (!isOnHomePage) {
+            searchView.setVisibility(View.GONE);
         }
         return false;
     }
@@ -376,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         });
         return false;
     }
+
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {

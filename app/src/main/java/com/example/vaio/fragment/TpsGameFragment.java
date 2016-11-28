@@ -1,6 +1,7 @@
 package com.example.vaio.fragment;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,7 +42,8 @@ public class TpsGameFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tps_game, container, false);
         initViews(v, LINK, TYPE_ID);
-//        getAllDataFromWeb(LINK,TYPE_ID,23);
+
+
         return v;
     }
 }

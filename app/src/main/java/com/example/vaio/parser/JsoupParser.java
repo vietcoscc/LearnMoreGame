@@ -1,5 +1,7 @@
 package com.example.vaio.parser;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -23,10 +25,20 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
     private static final String TAG = "JsoupParser";
     private Handler handler;
     private int typeId;
-
-    public JsoupParser(Handler handler, int typeId) {
+    private ProgressDialog progress;
+    private Context context;
+    public JsoupParser(Context context,Handler handler, int typeId) {
         this.handler = handler;
         this.typeId = typeId;
+        this.context = context;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progress = ProgressDialog.show(context,null,
+                "loading", true);
+        progress.setCancelable(false);
     }
 
     @Override
@@ -80,6 +92,7 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
         msg.obj = itemListViews;
         msg.arg1 = typeId;
         handler.sendMessage(msg);
+        progress.dismiss();
     }
 
     private String getViews(String s) {
