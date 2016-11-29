@@ -285,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         lvChosseFromDrawerLayout.setVisibility(View.VISIBLE);
         gridView.setVisibility(View.INVISIBLE);
+        lvChosseAdapter.setChooseListview(chooseAdapter);
 
         if (action == 1) {
             arrItemListViews.clear();
