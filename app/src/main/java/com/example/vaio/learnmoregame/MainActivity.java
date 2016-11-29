@@ -206,7 +206,25 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(this, ContentGameActivity.class);
+        boolean isLike = false;
+        boolean isLater = false;
+        ArrayList<ItemListView> arrItemListViewsLike = database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LIKE);
+        ArrayList<ItemListView> arrItemListViewsLater = database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LATER);
+        for (int count = 0; count < arrItemListViewsLike.size(); count++) {
+            if (arrItemListViewsLike.get(count).getName().equals(arrItemListViews.get(i).getName())) {
+                isLike = true;
+                break;
+            }
+        }
+        for (int count = 0; count < arrItemListViewsLater.size(); count++) {
+            if (arrItemListViewsLater.get(count).getName().equals(arrItemListViews.get(i).getName())) {
+                isLater = true;
+            }
+        }
+
         intent.putExtra(BaseFragment.KEY_INTENT_CHANGE, arrItemListViews.get(i));
+        intent.putExtra(BaseFragment.KEY_ITEM_IS_LIKE, isLike);
+        intent.putExtra(BaseFragment.KEY_ITEM_IS_LATER, isLater);
         startActivity(intent);
     }
 
@@ -223,14 +241,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     break;
                 case 1:
                     isOnHomePage = false;
-                    searchView.setVisibility(View.GONE);
                     getSupportActionBar().setTitle("Danh sách xem sau");
                     chooseAdapter = 1;
                     chooseDrawerLayout(1);
                     break;
                 case 2:
                     isOnHomePage = false;
-                    searchView.setVisibility(View.GONE);
                     getSupportActionBar().setTitle("Danh sách yêu thích");
                     chooseAdapter = 2;
                     chooseDrawerLayout(2);
@@ -378,7 +394,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             lvSearch.setVisibility(View.VISIBLE);
         }
-        arrAllItemListViews = database.getDataDistinctFromGameTable(MyDatabase.TB_NAME_LIST_MAIN);
+        if (chooseAdapter == 0) {
+            arrAllItemListViews = database.getDataDistinctFromGameTable(MyDatabase.TB_NAME_LIST_MAIN);
+        } else if (chooseAdapter == 1) {
+            arrAllItemListViews = database.getDataDistinctFromGameTable(MyDatabase.TB_NAME_LIST_LATER);
+        } else if (chooseAdapter == 2) {
+            arrAllItemListViews = database.getDataDistinctFromGameTable(MyDatabase.TB_NAME_LIST_LIKE);
+        }
         final ArrayList<ItemListView> arrSearchResult = new ArrayList<>();
         for (int i = 0; i < arrAllItemListViews.size(); i++) {
             if (arrAllItemListViews.get(i).getName().toLowerCase().contains(newText.toLowerCase())) {
@@ -391,7 +413,25 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(MainActivity.this, ContentGameActivity.class);
+                boolean isLike = false;
+                boolean isLater = false;
+                ArrayList<ItemListView> arrItemListViewsLike = database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LIKE);
+                ArrayList<ItemListView> arrItemListViewsLater = database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LATER);
+                for (int count = 0; count < arrItemListViewsLike.size(); count++) {
+                    if (arrItemListViewsLike.get(count).getName().equals(arrSearchResult.get(i).getName())) {
+                        isLike = true;
+                        break;
+                    }
+                }
+                for (int count = 0; count < arrItemListViewsLater.size(); count++) {
+                    if (arrItemListViewsLater.get(count).getName().equals(arrSearchResult.get(i).getName())) {
+                        isLater = true;
+                    }
+                }
+
                 intent.putExtra(BaseFragment.KEY_INTENT_CHANGE, arrSearchResult.get(i));
+                intent.putExtra(BaseFragment.KEY_ITEM_IS_LIKE, isLike);
+                intent.putExtra(BaseFragment.KEY_ITEM_IS_LATER, isLater);
                 if (!searchView.isIconified()) {
                     searchView.onActionViewCollapsed();
                 }
