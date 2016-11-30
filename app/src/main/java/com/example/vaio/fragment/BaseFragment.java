@@ -165,6 +165,12 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if(!MainActivity.isNetworkAvailable(getContext())){
+            Toast.makeText(getContext(),"Vui lòng kết nối mạng để xem chi tiết",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         Intent intent = new Intent(getActivity().getBaseContext(), ContentGameActivity.class);
         boolean isLike = false;
         boolean isLater = false;

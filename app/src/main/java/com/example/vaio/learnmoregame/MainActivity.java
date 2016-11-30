@@ -226,6 +226,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if(!isNetworkAvailable(this)){
+            Toast.makeText(this,"Vui lòng kết nối mạng",Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(this, ContentGameActivity.class);
         boolean isLike = false;
         boolean isLater = false;
@@ -365,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     break;
                 case 4:
                     feedbackDialog = new FeedbackDialog();
-                    feedbackDialog.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_Dialog);
+                    feedbackDialog.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
                     feedbackDialog.show(getFragmentManager(), "Feedback");
                     break;
                 case 5:
@@ -523,6 +527,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if(!MainActivity.isNetworkAvailable(getBaseContext())){
+                    Toast.makeText(getBaseContext(),"Vui lòng kết nối mạng",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(MainActivity.this, ContentGameActivity.class);
                 boolean isLike = false;
                 boolean isLater = false;
