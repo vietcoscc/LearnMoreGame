@@ -106,6 +106,7 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_game);
+
         database=new MyDatabase(this);
         arrImage = new ArrayList<>();
         imageViewPagerAdapter = new ImageViewPagerAdapter(this, arrImage);

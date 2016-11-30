@@ -47,7 +47,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:src="@drawable/more5" />
+                        android:src="@drawable/more2" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 
