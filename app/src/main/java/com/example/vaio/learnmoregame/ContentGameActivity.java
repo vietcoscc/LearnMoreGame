@@ -1,6 +1,7 @@
 package com.example.vaio.learnmoregame;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,7 +9,12 @@ import android.support.annotation.Nullable;
 
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +33,7 @@ import com.example.vaio.parser.ParserInformationGame;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -38,7 +45,7 @@ import java.util.ArrayList;
  * Created by TungMai on 24/11/2016.
  */
 
-public class ContentGameActivity extends YouTubeBaseActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class ContentGameActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String YOUTUBE_KEY = "AIzaSyDSct6gyum4wKmQ_LjAa9shTbPBzfE41uU";
     private static final String TAG = "ContentGameActivity";
     private ParserInformationGame parserInformationGame;
@@ -51,12 +58,14 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
     private ImageView ivFirst;
     private TextView tvContent;
     private TextView tvConfiguration;
-    private YouTubePlayerView videoView;
+    //    private YouTubePlayerView videoView;
     private ViewPager viewPagerImage;
     private CirclePageIndicator circlePageIndicator;
     private CollapsingToolbarLayout collapsingToolbarLayout;
 
     private ImageViewPagerAdapter imageViewPagerAdapter;
+
+    private YouTubePlayerFragment videoView;
 
     private ArrayList<String> arrImage;
 
@@ -75,7 +84,7 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
 
                 final ItemInforGame itemInforGame = (ItemInforGame) msg.obj;
 
-                Log.e(TAG, itemInforGame.getUrlBackgroup());
+//                Log.e(TAG, itemInforGame.getUrlBackgroup());
 
                 Picasso.with(getBaseContext()).load(itemInforGame.getUrlBackgroup()).into(ivFirst);
 
@@ -89,7 +98,11 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
                 videoView.initialize(YOUTUBE_KEY, new YouTubePlayer.OnInitializedListener() {
                     @Override
                     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                        youTubePlayer.cueVideo(itemInforGame.getLinkYoutube());
+                        try {
+                            youTubePlayer.cueVideo(itemInforGame.getLinkYoutube());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -107,7 +120,7 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_game);
 
-        database=new MyDatabase(this);
+        database = new MyDatabase(this);
         arrImage = new ArrayList<>();
         imageViewPagerAdapter = new ImageViewPagerAdapter(this, arrImage);
 
@@ -123,20 +136,18 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
     }
 
     private void initViews() {
-//        Intent intent=getIntent();
-//        ItemListView itemListView= (ItemListView) intent.getSerializableExtra(BaseFragment.KEY_INTENT_CHANGE);
 
-        ivBack = (ImageView) findViewById(R.id.iv_back);
-        ivBack.setOnClickListener(this);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ivMenu = (ImageView) findViewById(R.id.iv_menu);
-        ivMenu.setOnClickListener(this);
+
 
         tvNameGame = (TextView) findViewById(R.id.tv_name_game);
         tvDate = (TextView) findViewById(R.id.date);
         tvView = (TextView) findViewById(R.id.views);
 
-//        Log.e(TAG,itemListView.getName());
+        Log.e(TAG, itemListView.getName());
 
         tvNameGame.setText(itemListView.getName());
         tvDate.setText(itemListView.getDate());
@@ -150,7 +161,9 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
         tvContent = (TextView) findViewById(R.id.tv_content_game);
         tvConfiguration = (TextView) findViewById(R.id.tv_configuration);
         ivFirst = (ImageView) findViewById(R.id.iv_image_fisrt);
-        videoView = (YouTubePlayerView) findViewById(R.id.vv_video_game);
+
+
+        videoView = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.vv_video_game);
 
         viewPagerImage = (ViewPager) findViewById(R.id.iv_view_pager);
 
@@ -166,21 +179,20 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.iv_menu:
-                PopupMenu popupMenu = new PopupMenu(this, view);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
-                if (isLike) popupMenu.getMenu().getItem(0).setEnabled(false);
-                if (isLater) popupMenu.getMenu().getItem(1).setEnabled(false);
-                popupMenu.setOnMenuItemClickListener(this);
-                popupMenu.show();
-                break;
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.popup_menu, menu);
+        if (isLike) menu.getItem(0).setEnabled(false);
+        if (isLater) menu.getItem(1).setEnabled(false);
+        return true;
+    }
 
     @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.favorite:
                 database.insertItemListView(itemListView, MyDatabase.TB_NAME_LIST_LIKE);
                 Toast.makeText(this, "Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
@@ -196,7 +208,10 @@ public class ContentGameActivity extends YouTubeBaseActivity implements View.OnC
 
                 startActivity(Intent.createChooser(share, "Bạn muốn chia sẻ trên..."));
                 break;
+            case android.R.id.home:
+                finish();
+                break;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 }

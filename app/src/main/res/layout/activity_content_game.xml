@@ -12,6 +12,7 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -29,26 +30,6 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/iv_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/left_arrow_large" />
-
-                    <ImageView
-                        android:id="@+id/iv_menu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/more2" />
-                </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -121,8 +102,9 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/gameType" />
 
-            <com.google.android.youtube.player.YouTubePlayerView
+            <fragment
                 android:id="@+id/vv_video_game"
+                android:name="com.google.android.youtube.player.YouTubePlayerFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp" />

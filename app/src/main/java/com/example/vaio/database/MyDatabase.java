@@ -90,6 +90,7 @@ public class MyDatabase {
         }
     }
 
+
     // 59 29 13 12 23
 
     public ArrayList<ItemListView> getDataFromGameList() {
@@ -123,6 +124,7 @@ public class MyDatabase {
 
     public ArrayList<ItemListView> getDataFromGameTable(String nameTable) {
         openDatabase();
+        ArrayList<ItemListView> arrAllItemListViewTemp = new ArrayList<>();
         ArrayList<ItemListView> arrAllItemListView = new ArrayList<>();
         Cursor cursor = database.query(true, nameTable, null, null, null, null, null, null, null);
         cursor.moveToFirst();
@@ -143,12 +145,24 @@ public class MyDatabase {
             String views = cursor.getString(viewsIndex);
             String detailsUrl = cursor.getString(detailsUrlIndex);
             ItemListView itemListView = new ItemListView(typeId, imageUrl, name, type, date, views, detailsUrl);
-            arrAllItemListView.add(itemListView);
+            arrAllItemListViewTemp.add(itemListView);
             cursor.moveToNext();
         }
-
         closeDatabase();
+        for (int i = arrAllItemListViewTemp.size() - 1; i >= 0; i--) {
+            arrAllItemListView.add(arrAllItemListViewTemp.get(i));
+        }
         return arrAllItemListView;
+    }
+
+    public int getCountTable(String tableName) {//lay so luong phan tu trong bang
+        openDatabase();
+        int count = 0;
+        Cursor cursor = database.rawQuery("SELECT COUNT(*) AS COUNT FROM " + tableName, null);
+        cursor.moveToFirst();
+        count = cursor.getInt(cursor.getColumnIndex("COUNT"));
+        closeDatabase();
+        return count;
     }
 
     public void insertArrItemListView(ArrayList<ItemListView> arrItemListView, String
@@ -207,6 +221,7 @@ public class MyDatabase {
         database.delete(nameTable, TYPE_ID + " = ?", whereArgs);
         closeDatabase();
     }
+
     public void insertItemListView(ItemListView itemListView, String nameTable) {
         openDatabase();
         ContentValues contentValues = new ContentValues();
@@ -220,6 +235,7 @@ public class MyDatabase {
         database.insert(nameTable, null, contentValues);
         closeDatabase();
     }
+
     public void deleteItemListView(ItemListView itemListView, String nameTable) {
         openDatabase();
         String nameGame = itemListView.getName();

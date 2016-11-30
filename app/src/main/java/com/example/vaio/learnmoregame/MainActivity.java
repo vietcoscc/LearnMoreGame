@@ -141,9 +141,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     //khoi tao dem so tren drawerlayout
     private void initCount() {
+        arrCountContentDrawerLayout.clear();
         arrCountContentDrawerLayout.add(0);
-        arrCountContentDrawerLayout.add(12);
-        arrCountContentDrawerLayout.add(0);
+        arrCountContentDrawerLayout.add(database.getCountTable(MyDatabase.TB_NAME_LIST_LATER));
+        arrCountContentDrawerLayout.add(database.getCountTable(MyDatabase.TB_NAME_LIST_LIKE));
     }
 
     private void initToolbar() {
@@ -171,13 +172,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name) {
             public void onDrawerOpened(View drawerView) {
+                initCount();
+                listViewDrawerLayoutAdapter.notifyDataSetChanged();
                 super.onDrawerOpened(drawerView);
 //                Toast.makeText(getBaseContext(),"open",Toast.LENGTH_SHORT).show();
-
 
             }
 
             public void onDrawerClosed(View drawerView) {
+                initCount();
+                listViewDrawerLayoutAdapter.notifyDataSetChanged();
                 super.onDrawerClosed(drawerView);
 //                Toast.makeText(getBaseContext(),"close",Toast.LENGTH_SHORT).show();
 //                window.setStatusBarColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
