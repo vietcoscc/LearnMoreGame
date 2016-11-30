@@ -8,4 +8,40 @@
     <color name="black">#000</color>
     <color name="color_ds">#e99048</color>
     <color name="Blue">#e3f2fd</color>
+
+
+    <color name="red400">#ef5350</color>
+    <color name="red200">#ef9a9a</color>
+    <color name="red300">#e57373</color>
+    <color name="pink200">#f48fb1</color>
+    <color name="pink300">#f06292</color>
+    <color name="pink400">#ec407a</color>
+    <color name="purple200">#ce93d8</color>
+    <color name="purple300">#ba68c8</color>
+    <color name="purple400">#ab47bc</color>
+    <color name="deepPurple200">#b39ddb</color>
+    <color name="deepPurple300">#9575cd</color>
+    <color name="deepPurple400">#7e57c2</color>
+    <color name="blue200">#90caf9</color>
+    <color name="blue300">#64b5f6</color>
+    <color name="blue400">#42a5f5</color>
+    <color name="green200">#a5d6a7</color>
+    <color name="green300">#81c784</color>
+    <color name="green400">#66bb6a</color>
+    <color name="orange200">#ffcc80</color>
+    <color name="orange300">#ffb74d</color>
+    <color name="orange400">#ffa726</color>
+    <color name="brown200">#bcaaa4</color>
+    <color name="brown300">#a1887f</color>
+    <color name="brown400">#8d6e63</color>
+    <color name="grey200">#eeeeee</color>
+    <color name="grey300">#e0e0e0</color>
+    <color name="grey400">#bdbdbd</color>
+
+
+
+
+
+
+
 </resources>

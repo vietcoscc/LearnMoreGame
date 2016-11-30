@@ -36,7 +36,7 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progress = ProgressDialog.show(context,null,
+        progress = ProgressDialog.show(context, null,
                 "loading", true);
         progress.setCancelable(false);
     }

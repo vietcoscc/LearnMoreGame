@@ -1,6 +1,7 @@
 package com.example.vaio.database;
 
 import android.app.ActivityOptions;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -48,7 +49,6 @@ public class MyDatabase {
     public static final String PATH = Environment.getDataDirectory() + "/data/com.example.vaio.learnmoregame/databases/" + DB_NAME;
     private Context context;
     private SQLiteDatabase database;
-
     private ArrayList<ItemListView> arrAllItemListView = new ArrayList<>();
 
 

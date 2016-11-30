@@ -32,6 +32,7 @@ import static android.content.ContentValues.TAG;
 public class TpsGameFragment extends BaseFragment {
     public static final int TYPE_ID = 4;
     public static final String LINK = "http://linkneverdie.com/TPS-Games/?theloaiId=2&page=";
+    private ProgressDialog progress;
 
     public TpsGameFragment(Context context) {
         super(context);
@@ -42,8 +43,7 @@ public class TpsGameFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tps_game, container, false);
         initViews(v, LINK, TYPE_ID);
-
-
         return v;
     }
+
 }

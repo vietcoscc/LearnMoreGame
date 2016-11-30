@@ -22,11 +22,11 @@ public class ListViewDrawerLayoutAdapter extends RecyclerView.Adapter<ListViewDr
     //danh sach icon
     private static final Integer[] arrIcon = {
             R.drawable.home,
-            R.drawable.clock, R.drawable.like_drawerlayout, R.drawable.settings, R.drawable.feedback, R.drawable.help, R.drawable.logout
+            R.drawable.clock, R.drawable.like_drawerlayout, R.drawable.theme, R.drawable.feedback, R.drawable.help, R.drawable.logout
     };
     //danh sach noi dung
     private static final String[] arrContent = {
-            "Trang chính", "Danh sách xem sau", "Danh sách yêu thích", "Cài đặt", "Phản hồi", "Giới thiệu", "Thoát"
+            "Trang chính", "Danh sách xem sau", "Danh sách yêu thích", "Chủ đề", "Phản hồi", "Giới thiệu", "Thoát"
     };
     //danh sach so dem
     private ArrayList<Integer> arrCountContent;

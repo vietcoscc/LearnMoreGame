@@ -50,10 +50,11 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     private Context context;
     private MyDatabase database;
     private boolean isCleared = false;
-    private int lastTotalItemCount = -1;
+    protected int lastTotalItemCount = -1;
     private String link;
     private int typeId;
-
+    private ProgressDialog progress;
+    private boolean isJustOpened = true;
 
     public BaseFragment(Context context) {
         this.context = context;
@@ -64,7 +65,6 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     protected void initViews(View v, final String link, final int typeId) {
         this.link = link;
         this.typeId = typeId;
-
         listView = (ListView) v.findViewById(R.id.listView);
         listViewAdapter = new ListViewAdapter(getContext(), arrItemListView, MainActivity.POPUP_MENU_IN_HOME);
         listView.setAdapter(listViewAdapter);
@@ -114,8 +114,9 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     }
 
     public void getDataFromWeb(String link, int typeId) {
+
         currentPage++;
-        JsoupParser jsoupParser = new JsoupParser(context,handler, typeId);
+        JsoupParser jsoupParser = new JsoupParser(context, handler, typeId);
         jsoupParser.execute(link + currentPage);
     }
 
@@ -135,6 +136,8 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
                 database.insertArrItemListView((ArrayList<ItemListView>) msg.obj, MyDatabase.TB_NAME_LIST_MAIN);
                 listViewAdapter.notifyDataSetChanged();
                 gridViewAdapter.notifyDataSetChanged();
+
+
             }
         }
     };
@@ -146,7 +149,6 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
         if ((firstVisibleItem + visibleItemCount) == totalItemCount && MainActivity.isNetworkAvailable(getContext()) && currentPage < 20 && lastTotalItemCount < totalItemCount) {
             getDataFromWeb(link, typeId);
             lastTotalItemCount = totalItemCount;

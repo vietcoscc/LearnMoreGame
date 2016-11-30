@@ -1,11 +1,16 @@
 package com.example.vaio.learnmoregame;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
@@ -24,6 +29,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,6 +51,7 @@ import com.example.vaio.adapter.GridViewAdapter;
 import com.example.vaio.adapter.ListViewAdapter;
 import com.example.vaio.adapter.ListViewDrawerLayoutAdapter;
 import com.example.vaio.adapter.ListViewSearchAdapter;
+import com.example.vaio.adapter.ListViewThemeAdapter;
 import com.example.vaio.adapter.ViewPagerAdapter;
 import com.example.vaio.database.MyDatabase;
 import com.example.vaio.dialog.FeedbackDialog;
@@ -52,8 +59,13 @@ import com.example.vaio.dialog.IntroductionDialog;
 import com.example.vaio.fragment.BaseFragment;
 import com.example.vaio.model_object.ItemListView;
 import com.example.vaio.parser.JsoupParser;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener, AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
 
@@ -96,6 +108,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     //
 
     private boolean isOnHomePage = true;
+    private ListView lvTheme;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -116,6 +134,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         initMainViews();
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     //khoi tao dem so tren drawerlayout
@@ -252,6 +273,95 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     chooseDrawerLayout(2);
                     break;
                 case 3:
+                    final ArrayList<Integer> arrItemColor = new ArrayList<>();
+                    int arrColor[] =
+                            {getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.red200),
+                                    getResources().getColor(R.color.red300), getResources().getColor(R.color.red400), getResources().getColor(R.color.pink200),
+                                    getResources().getColor(R.color.pink300), getResources().getColor(R.color.pink400), getResources().getColor(R.color.purple200),
+                                    getResources().getColor(R.color.purple300), getResources().getColor(R.color.purple400), getResources().getColor(R.color.deepPurple200),
+                                    getResources().getColor(R.color.deepPurple300), getResources().getColor(R.color.deepPurple400), getResources().getColor(R.color.blue200),
+                                    getResources().getColor(R.color.blue300), getResources().getColor(R.color.blue300), getResources().getColor(R.color.green200),
+                                    getResources().getColor(R.color.green300), getResources().getColor(R.color.green400), getResources().getColor(R.color.orange200),
+                                    getResources().getColor(R.color.orange300), getResources().getColor(R.color.orange400), getResources().getColor(R.color.brown200),
+                                    getResources().getColor(R.color.brown300), getResources().getColor(R.color.brown400), getResources().getColor(R.color.grey200),
+                                    getResources().getColor(R.color.grey300), getResources().getColor(R.color.grey400)};
+
+                    for (int i = 0; i < arrColor.length; i++) {
+                        arrItemColor.add(arrColor[i]);
+                    }
+                    final int lastColorToolbar = ((ColorDrawable) toolbar.getBackground()).getColor();
+                    final int lastColorTablayout = ((ColorDrawable) tabLayout.getBackground()).getColor();
+                    LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+                    View v = inflater.inflate(R.layout.theme_changer_dialog, null);
+
+
+                    lvTheme = (ListView) v.findViewById(R.id.lvThemeToolbar);
+                    ListViewThemeAdapter listViewThemeAdapter = new ListViewThemeAdapter(MainActivity.this, arrItemColor);
+                    lvTheme.setAdapter(listViewThemeAdapter);
+                    lvTheme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            int colorFrom = ((ColorDrawable) toolbar.getBackground()).getColor();
+                            int colorTo = arrItemColor.get(i);
+                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                            colorAnimation.setDuration(1000); // milliseconds
+                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    toolbar.setBackgroundColor((int) animator.getAnimatedValue());
+                                }
+
+                            });
+                            colorAnimation.start();
+//                            toolbar.setBackgroundColor(arrItemColor.get(i));
+//
+                        }
+                    });
+
+
+                    lvTheme = (ListView) v.findViewById(R.id.lvThemeTablayout);
+                    ListViewThemeAdapter listViewThemeAdapter2 = new ListViewThemeAdapter(MainActivity.this, arrItemColor);
+                    lvTheme.setAdapter(listViewThemeAdapter2);
+                    lvTheme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            int colorFrom = ((ColorDrawable) tabLayout.getBackground()).getColor();
+                            int colorTo = arrItemColor.get(i);
+                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                            colorAnimation.setDuration(1000); // milliseconds
+                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    tabLayout.setBackgroundColor((int) animator.getAnimatedValue());
+                                }
+
+                            });
+                            colorAnimation.start();
+                        }
+                    });
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
+                    builder.setTitle("Lựa chọn chủ đề");
+                    builder.setCancelable(false);
+                    builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            toolbar.setBackgroundColor(lastColorToolbar);
+                            tabLayout.setBackgroundColor(lastColorTablayout);
+                        }
+                    });
+                    builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(MainActivity.this, "Đã thay đổi theme", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builder.setView(v);
+                    builder.create().show();
                     break;
                 case 4:
                     feedbackDialog = new FeedbackDialog();
@@ -449,5 +559,41 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 }
