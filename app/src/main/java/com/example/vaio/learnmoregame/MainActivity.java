@@ -401,6 +401,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else if (chooseAdapter == 2) {
             arrAllItemListViews = database.getDataDistinctFromGameTable(MyDatabase.TB_NAME_LIST_LIKE);
         }
+
         final ArrayList<ItemListView> arrSearchResult = new ArrayList<>();
         for (int i = 0; i < arrAllItemListViews.size(); i++) {
             if (arrAllItemListViews.get(i).getName().toLowerCase().contains(newText.toLowerCase())) {
