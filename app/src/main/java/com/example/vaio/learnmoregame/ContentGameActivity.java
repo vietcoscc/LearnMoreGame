@@ -45,7 +45,7 @@ import java.util.ArrayList;
  * Created by TungMai on 24/11/2016.
  */
 
-public class ContentGameActivity extends AppCompatActivity implements View.OnClickListener {
+public class ContentGameActivity extends AppCompatActivity{
     private static final String YOUTUBE_KEY = "AIzaSyDSct6gyum4wKmQ_LjAa9shTbPBzfE41uU";
     private static final String TAG = "ContentGameActivity";
     private ParserInformationGame parserInformationGame;
@@ -76,6 +76,11 @@ public class ContentGameActivity extends AppCompatActivity implements View.OnCli
     private boolean isLater;
     private MyDatabase database;
 
+
+    /**
+     * Nhan tin nhan du lieu tu AsyncTask: ParserInformationGame
+     * Cập nhập lại view trên layout
+     */
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -135,6 +140,10 @@ public class ContentGameActivity extends AppCompatActivity implements View.OnCli
         parserInformationGame.execute("https://" + itemListView.getDetailsUrl());
     }
 
+    /**
+     * Khởi tạo tất cả view trên layout
+     * setAdapter cho ViewPager hiển thị image
+     */
     private void initViews() {
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -142,12 +151,11 @@ public class ContentGameActivity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
         tvNameGame = (TextView) findViewById(R.id.tv_name_game);
         tvDate = (TextView) findViewById(R.id.date);
         tvView = (TextView) findViewById(R.id.views);
 
-        Log.e(TAG, itemListView.getName());
+//        Log.e(TAG, itemListView.getName());
 
         tvNameGame.setText(itemListView.getName());
         tvDate.setText(itemListView.getDate());
@@ -172,16 +180,11 @@ public class ContentGameActivity extends AppCompatActivity implements View.OnCli
         viewPagerImage.setAdapter(imageViewPagerAdapter);
         circlePageIndicator.setViewPager(viewPagerImage);
     }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-        }
-    }
-
+    /**
+     * khởi tạo menu trên thanh Toolbar
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.popup_menu, menu);
@@ -190,6 +193,11 @@ public class ContentGameActivity extends AppCompatActivity implements View.OnCli
         return true;
     }
 
+    /**
+     * phương thức bắt sự kiện trên menu của Toolbar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

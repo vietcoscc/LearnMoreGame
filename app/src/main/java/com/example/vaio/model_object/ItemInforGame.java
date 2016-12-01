@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Created by TungMai on 24/11/2016.
+ * Đối tượng thông tin chi tiết game
  */
 
 public class ItemInforGame {

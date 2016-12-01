@@ -24,6 +24,14 @@ public class FeedbackDialog extends DialogFragment implements View.OnClickListen
     private Button btnOk;
     private Button btnCancel;
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     * Khởi tạo view
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +41,9 @@ public class FeedbackDialog extends DialogFragment implements View.OnClickListen
         return view;
     }
 
+    /**
+     * Tham chiếu và bắt click view trên layout
+     */
     private void initViews() {
         edtInput = (EditText) view.findViewById(R.id.edt_input);
         btnCancel = (Button) view.findViewById(R.id.btn_cancel);
@@ -41,7 +52,11 @@ public class FeedbackDialog extends DialogFragment implements View.OnClickListen
         btnOk.setOnClickListener(this);
     }
 
-
+    /**
+     *
+     * @param view
+     * bắt click trên layout
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

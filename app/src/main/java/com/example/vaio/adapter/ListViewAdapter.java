@@ -28,7 +28,7 @@ import java.util.List;
  * Created by vaio on 11/24/2016.
  */
 
-public class ListViewAdapter extends ArrayAdapter implements View.OnClickListener{
+public class ListViewAdapter extends ArrayAdapter{
     private static final String TAG = "ListViewAdapter";
     private Context context;
     private ArrayList<ItemListView> arrItemListView;
@@ -123,7 +123,9 @@ public class ListViewAdapter extends ArrayAdapter implements View.OnClickListene
         return v;
     }
 
-
+    /**
+     * click vào item trên popupmenu
+     */
     private PopupMenu.OnMenuItemClickListener itemClickPopup = new PopupMenu.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
@@ -174,6 +176,9 @@ public class ListViewAdapter extends ArrayAdapter implements View.OnClickListene
 //        return currentPosition == getCount() - 1;
 //    }
 
+    /**
+     * phương thức share game
+     */
     public void shareItem() {
         ItemListView itemListView = arrItemListView.get(currentPosition);
         Intent share = new Intent(Intent.ACTION_SEND);
@@ -183,27 +188,10 @@ public class ListViewAdapter extends ArrayAdapter implements View.OnClickListene
         getContext().startActivity(Intent.createChooser(share, "Bạn muốn chia sẻ trên..."));
     }
 
-
-    public int getStatePopupMenu() {
-        return statePopupMenu;
-    }
-
-    public void setStatePopupMenu(int statePopupMenu) {
-        this.statePopupMenu = statePopupMenu;
-    }
-
-    public int getChooseListview() {
-        return chooseListview;
-    }
-
     public void setChooseListview(int chooseListview) {
         this.chooseListview = chooseListview;
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
 
     class ViewHolder {
         ImageView image;

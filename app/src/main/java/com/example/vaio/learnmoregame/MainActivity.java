@@ -139,16 +139,20 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    //khoi tao dem so tren drawerlayout
+    /**
+     * khởi tạo đếm số trong danh sách xem sau,yêu thích
+     */
     private void initCount() {
         arrCountContentDrawerLayout.clear();
         arrCountContentDrawerLayout.add(0);
-        arrCountContentDrawerLayout.add(database.getCountTable(MyDatabase.TB_NAME_LIST_LATER));
-        arrCountContentDrawerLayout.add(database.getCountTable(MyDatabase.TB_NAME_LIST_LIKE));
+        arrCountContentDrawerLayout.add(database.getCountTable(MyDatabase.TB_NAME_LIST_LATER));//ds xem sau
+        arrCountContentDrawerLayout.add(database.getCountTable(MyDatabase.TB_NAME_LIST_LIKE));//sa yêu thích
     }
 
+    /**
+     * Toolbar
+     */
     private void initToolbar() {
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -230,8 +234,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if(!isNetworkAvailable(this)){
-            Toast.makeText(this,"Vui lòng kết nối mạng",Toast.LENGTH_SHORT).show();
+        if (!isNetworkAvailable(this)) {
+            Toast.makeText(this, "Vui lòng kết nối mạng", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent intent = new Intent(this, ContentGameActivity.class);
@@ -257,6 +261,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         startActivity(intent);
     }
 
+    /**
+     * Action click của sự kiện click item trên drawerlayout
+     * 0:trang chủ
+     * 1:ds xem sau
+     * 2:ds yêu thích
+     * 3:theme
+     * 4:phản hồi
+     * 5:giới thiệu
+     * 6:thoát
+     */
     private ListViewDrawerLayoutAdapter.OnItemClickListener clickDrawerLayout = new ListViewDrawerLayoutAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
@@ -410,9 +424,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
     };
 
-    //cap nhat listview khi chon item trong drawerlayout
-    //action hanh dong cua item tren drawerlayout
-    //1:xem,2:thich
+    /**
+     * @param action :vị trí của sự kiện click trên drawerlayout
+     *               cap nhat listview khi chon item trong drawerlayout
+     *               action hanh dong cua item tren drawerlayout
+     *               1:xem,2:thich
+     */
     private void chooseDrawerLayout(int action) {
         linearLayoutListMain.setVisibility(View.INVISIBLE);
         linearLayoutListChosseFromDrawerLayout.setVisibility(View.VISIBLE);
@@ -434,6 +451,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
     }
 
+    /**
+     * @param context:context hiện tại
+     * @return true:có mạng,false :ko có mạng
+     */
     public static boolean isNetworkAvailable(Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
@@ -479,6 +500,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     }
 
+    /**
+     * @param item item1:in theo dạng listview
+     *             item2:in theo dạng gridview
+     * @return click
+     * sự kiện click vào menu trên thanh Toolbar
+     */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
@@ -505,6 +532,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return false;
     }
 
+    /**
+     * seach trên thanh Toolbar
+     * @param newText:text để tìm kiếm game
+     * @return listview tìm kiếm
+     */
     @Override
     public boolean onQueryTextChange(String newText) {
         if (newText.isEmpty()) {
@@ -532,8 +564,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if(!MainActivity.isNetworkAvailable(getBaseContext())){
-                    Toast.makeText(getBaseContext(),"Vui lòng kết nối mạng",Toast.LENGTH_SHORT).show();
+                if (!MainActivity.isNetworkAvailable(getBaseContext())) {
+                    Toast.makeText(getBaseContext(), "Vui lòng kết nối mạng", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent intent = new Intent(MainActivity.this, ContentGameActivity.class);
@@ -565,6 +597,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return false;
     }
 
+    /**
+     * bắt sự kiện nút backpress
+     */
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {

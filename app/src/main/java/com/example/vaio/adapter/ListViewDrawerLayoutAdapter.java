@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * Created by TungMai on 25/11/2016.
+ * Adapter của drawerlayout
  */
 
 public class ListViewDrawerLayoutAdapter extends RecyclerView.Adapter<ListViewDrawerLayoutAdapter.ItemView> {

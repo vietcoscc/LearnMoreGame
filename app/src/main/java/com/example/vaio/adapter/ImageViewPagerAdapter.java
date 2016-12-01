@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 /**
  * Created by TungMai on 26/11/2016.
+ * PageAdapter của list ảnh trên chi tiết thông tin game
  */
 
 public class ImageViewPagerAdapter extends PagerAdapter {
