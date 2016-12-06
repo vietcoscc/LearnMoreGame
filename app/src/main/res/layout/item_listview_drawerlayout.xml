@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="@dimen/activity_vertical_margin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:alpha="0.7"
         android:id="@+id/iv_icon_listview_drawerlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_watch_later_black_24dp" />
+        android:scaleType="centerInside" />
 
     <TextView
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:id="@+id/tv_content_listview_drawerlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/iv_icon_listview_drawerlayout"
-        android:text="Danh sách xem sau"
         android:textColor="#000"
         android:textSize="16sp" />
 
     <TextView
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:id="@+id/tv_count_listview_drawerlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:text="10"
         android:textColor="#000"
         android:textSize="16sp" />
 
     <View
-        android:layout_below="@id/iv_icon_listview_drawerlayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_below="@id/iv_icon_listview_drawerlayout"
         android:id="@+id/view_part"
         android:layout_width="match_parent"
         android:layout_height="1dp"

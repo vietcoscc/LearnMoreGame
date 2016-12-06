@@ -8,12 +8,12 @@ import java.io.Serializable;
 
 public class ItemListView implements Serializable{
     private int typeId; // Xác định item nằm trong listView nào
-    private String imageUrl;
-    private String name;
-    private String type;
-    private String date;
-    private String views;
-    private String detailsUrl;
+    private String imageUrl;// url của hình ảnh
+    private String name;// tên của game
+    private String type;// thể loại game
+    private String date;// ngày ra mắt game
+    private String views;// số lượng xem
+    private String detailsUrl;// url của nội dung game
 
     public ItemListView(int typeId, String imageUrl, String name, String type, String date, String views, String detailsUrl) {
         this.typeId = typeId;

@@ -4,6 +4,8 @@ package com.example.vaio.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -46,15 +48,12 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
     protected ListViewAdapter listViewAdapter;
     protected GridViewAdapter gridViewAdapter;
     protected ArrayList<ItemListView> arrItemListView = new ArrayList<>();
-    protected ArrayList<ItemListView> arrAllDataFromWeb = new ArrayList<>();
     private Context context;
     private MyDatabase database;
     private boolean isCleared = false;
     protected int lastTotalItemCount = -1;
     private String link;
     private int typeId;
-    private ProgressDialog progress;
-    private boolean isJustOpened = true;
 
     public BaseFragment(Context context) {
         this.context = context;
@@ -96,15 +95,15 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         gridView.setVisibility(View.INVISIBLE);
     }
 
-    public void getDataFromDatabase(final int typeId) {
+    public void getDataFromDatabase(final int typeId) { // lấy dữ liệu trong database để hiển thị khi không có internet
         new Thread(new Runnable() {
             @Override
             public void run() {
                 arrItemListView.clear();
-                ArrayList<ItemListView> arrTmp = database.getDataFromGameList();
+                ArrayList<ItemListView> arrTmp = database.getDataFromGameList(); // get data
                 for (int i = 0; i < arrTmp.size(); i++) {
                     if (arrTmp.get(i).getTypeId() == typeId) {
-                        arrItemListView.add(arrTmp.get(i));
+                        arrItemListView.add(arrTmp.get(i)); // thêm vào mảng để hiển thị
                     }
                 }
                 listViewAdapter.notifyDataSetChanged();
@@ -165,8 +164,8 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if(!MainActivity.isNetworkAvailable(getContext())){
-            Toast.makeText(getContext(),"Vui lòng kết nối mạng để xem chi tiết",Toast.LENGTH_SHORT).show();
+        if (!MainActivity.isNetworkAvailable(getContext())) { // kiểm tra internet trên thiết bị khi xem nội dung game
+            Toast.makeText(getContext(), "Vui lòng kết nối mạng để xem chi tiết", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -174,7 +173,9 @@ public class BaseFragment extends Fragment implements AbsListView.OnScrollListen
         Intent intent = new Intent(getActivity().getBaseContext(), ContentGameActivity.class);
         boolean isLike = false;
         boolean isLater = false;
+        // lấy mảng dữ liệu đã thích trong database
         ArrayList<ItemListView> arrItemListViewsLike = database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LIKE);
+        // lấy mảng dữ liệu xem sau trong database
         ArrayList<ItemListView> arrItemListViewsLater = database.getDataFromGameTable(MyDatabase.TB_NAME_LIST_LATER);
         for (int count = 0; count < arrItemListViewsLike.size(); count++) {
             if (arrItemListViewsLike.get(count).getName().equals(arrItemListView.get(i).getName())) {

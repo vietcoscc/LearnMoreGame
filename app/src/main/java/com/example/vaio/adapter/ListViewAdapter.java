@@ -27,7 +27,8 @@ import java.util.List;
 /**
  * Created by vaio on 11/24/2016.
  */
-
+// pre-condition: mảng dữ liệu từ web hoặc database
+//post-condition:get ra các view để hiển thị lên listview
 public class ListViewAdapter extends ArrayAdapter{
     private static final String TAG = "ListViewAdapter";
     private Context context;

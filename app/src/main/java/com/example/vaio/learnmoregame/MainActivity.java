@@ -7,8 +7,10 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -33,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -69,16 +72,11 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MenuItem.OnMenuItemClickListener, AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
 
-    public static final String ACTION_GAME = "Action";
-    public static final String FPS_GAME = "FPS";
-    public static final String OPEN_WORLD_GAME = "Open world";
-    public static final String SURVIVAL_GAME = "Survival";
-    public static final String TPS_GAME = "TPS";
-    private static final String TAG = "MainActivity";
-
     public static final int POPUP_MENU_IN_HOME = 0;
     public static final int POPUP_MENU_IN_LIST_LIKE_AND_LATER = 1;
-
+    public static final String PREFERENCES = "preferences";
+    public static final String TOOLBAR_THEME = "toolbar theme";
+    public static final String TAB_LAYOUT_THEME = "tabLayout theme";
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -106,9 +104,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private FeedbackDialog feedbackDialog;
     private int chooseAdapter;
     //
-
-    private boolean isOnHomePage = true;
     private ListView lvTheme;
+    private SharedPreferences sharedPreferences;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -120,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         database = new MyDatabase(this);
         //khoi tao
         arrCountContentDrawerLayout = new ArrayList<>();
@@ -157,8 +155,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Trang chủ");
-//        titleToolbar  = (TextView) findViewById(R.id.titleToolbar);
-//        titleToolbar.setText("Trang chủ");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -184,11 +180,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             }
 
             public void onDrawerClosed(View drawerView) {
+                clearColor(lastView);
                 initCount();
                 listViewDrawerLayoutAdapter.notifyDataSetChanged();
                 super.onDrawerClosed(drawerView);
-//                Toast.makeText(getBaseContext(),"close",Toast.LENGTH_SHORT).show();
-//                window.setStatusBarColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
@@ -229,8 +224,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         // list view cua thanh search
 
         lvSearch = (ListView) findViewById(R.id.lvSearch);
+        loadSetting();
     }
 
+    private void loadSetting() {
+        sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        if (sharedPreferences != null) {
+            int toolBarTheme = sharedPreferences.getInt(TOOLBAR_THEME, R.color.Indigo600);
+            int tabLayoutTheme = sharedPreferences.getInt(TAB_LAYOUT_THEME, R.color.colorPrimary);
+            toolbar.setBackgroundColor(toolBarTheme);
+            tabLayout.setBackgroundColor(tabLayoutTheme);
+        }
+    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -271,25 +276,32 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
      * 5:giới thiệu
      * 6:thoát
      */
+    private View lastView;
+
+    private void clearColor(View view) {
+        if (view != null) {
+            view.setBackgroundColor(0);
+        }
+    }
+
     private ListViewDrawerLayoutAdapter.OnItemClickListener clickDrawerLayout = new ListViewDrawerLayoutAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
+            lastView = view;
+            view.setBackgroundColor(getResources().getColor(R.color.grey200));
             switch (position) {
                 case 0:
-                    isOnHomePage = true;
                     searchView.setVisibility(View.VISIBLE);
                     getSupportActionBar().setTitle("Trang chủ");
                     linearLayoutListMain.setVisibility(View.VISIBLE);
                     linearLayoutListChosseFromDrawerLayout.setVisibility(View.INVISIBLE);
                     break;
                 case 1:
-                    isOnHomePage = false;
                     getSupportActionBar().setTitle("Danh sách xem sau");
                     chooseAdapter = 1;
                     chooseDrawerLayout(1);
                     break;
                 case 2:
-                    isOnHomePage = false;
                     getSupportActionBar().setTitle("Danh sách yêu thích");
                     chooseAdapter = 2;
                     chooseDrawerLayout(2);
@@ -338,6 +350,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                             });
                             colorAnimation.start();
 //                            toolbar.setBackgroundColor(arrItemColor.get(i));
+                            sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putInt(TOOLBAR_THEME, arrItemColor.get(i));
+                            editor.apply();
+                            editor.commit();
+
 //
                         }
                     });
@@ -358,10 +376,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                 @Override
                                 public void onAnimationUpdate(ValueAnimator animator) {
                                     tabLayout.setBackgroundColor((int) animator.getAnimatedValue());
+
+
                                 }
 
                             });
                             colorAnimation.start();
+
+                            sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putInt(TAB_LAYOUT_THEME, arrItemColor.get(i));
+                            editor.apply();
+                            editor.commit();
                         }
                     });
 
@@ -520,9 +546,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 gridView.setVisibility(View.VISIBLE);
                 break;
         }
-        if (!isOnHomePage) {
-            searchView.setVisibility(View.GONE);
-        }
         return false;
     }
 
@@ -534,6 +557,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     /**
      * seach trên thanh Toolbar
+     *
      * @param newText:text để tìm kiếm game
      * @return listview tìm kiếm
      */

@@ -24,7 +24,7 @@ import java.util.Collection;
 /**
  * Created by vaio on 11/22/2016.
  */
-
+// Fragment hiển thị game sinh tồn
 public class SurvivalGameFragment extends BaseFragment {
     public static final int TYPE_ID = 3;
     public static final String LINK = "http://linkneverdie.com/Survival-Games/?theloaiId=9&page=";
@@ -37,9 +37,7 @@ public class SurvivalGameFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_survival_game, container, false);
-
-        initViews(v,LINK,TYPE_ID);
-//        getAllDataFromWeb(LINK,TYPE_ID,12);
+        initViews(v, LINK, TYPE_ID);
         return v;
     }
 

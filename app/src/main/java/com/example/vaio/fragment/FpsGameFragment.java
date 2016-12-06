@@ -24,7 +24,7 @@ import java.util.Collection;
 /**
  * Created by vaio on 11/22/2016.
  */
-
+// Fragment hiển thị game góc nhìn thứ nhất
 public class FpsGameFragment extends BaseFragment {
     public static final int TYPE_ID = 1;
     public static final String LINK = "http://linkneverdie.com/FPS-Games/?theloaiId=1&page=";
@@ -37,8 +37,7 @@ public class FpsGameFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_fps_game, container, false);
-        initViews(v,LINK,TYPE_ID);
-//        getAllDataFromWeb(LINK,TYPE_ID,29);
+        initViews(v, LINK, TYPE_ID);
         return v;
     }
 

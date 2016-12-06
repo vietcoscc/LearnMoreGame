@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">LearnMoreGame</string>
-    <string name="item1">List view</string>
-    <string name="item2">Grid view</string>
+    <string name="item1">Chế độ xem danh sách</string>
+    <string name="item2">Chế độ xem lưới</string>
     <string name="gameName">Assasin\'s Creed</string>
     <string name="gameType">Nhập vai, hành động</string>
     <string name="date">23 Oct 1996</string>
     <string name="views">9999</string>
+    <string name="memberList">Nguyễn Quốc Việt \n Mai Thanh Tùng\nTrương Văn Tý\nPhạm Văn Sơn\nNguyễn Việt Anh</string>
+    <string name="hintFeedback">Nhập phản hồi ...</string>
 </resources>

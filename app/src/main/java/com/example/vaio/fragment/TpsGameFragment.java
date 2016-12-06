@@ -28,11 +28,10 @@ import static android.content.ContentValues.TAG;
 /**
  * Created by vaio on 11/22/2016.
  */
-
+// Fragment hiển thị game góc nhìn thứ 3
 public class TpsGameFragment extends BaseFragment {
     public static final int TYPE_ID = 4;
     public static final String LINK = "http://linkneverdie.com/TPS-Games/?theloaiId=2&page=";
-    private ProgressDialog progress;
 
     public TpsGameFragment(Context context) {
         super(context);

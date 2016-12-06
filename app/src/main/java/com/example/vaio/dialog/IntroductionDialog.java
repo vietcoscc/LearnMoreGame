@@ -26,7 +26,7 @@ public class IntroductionDialog extends DialogFragment {
     private ImageView ivBack;
     private TextView tvTeam;
 
-    private static final String STR_TEAM = "";
+    private static final String STR_TEAM = "Nguyễn Quốc Việt \n Mai Thanh Tùng\nTrương Văn Tý\nPhạm Văn Sơn\nNguyễn Việt Anh";
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -34,8 +34,7 @@ public class IntroductionDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.dialog_introduction, container, false);
-//        getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//        getDialog().getWindow().setStatusBarColor(ContextCompat.getColor(getDialog().getContext(), R.color.color_ds));
+
 
         getDialog().getWindow().getAttributes().windowAnimations = R.style.AnimationDialogIntroduction;
         initViews();

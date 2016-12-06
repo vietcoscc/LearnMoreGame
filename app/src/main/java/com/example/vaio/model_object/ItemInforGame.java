@@ -26,39 +26,20 @@ public class ItemInforGame {
         return urlBackgroup;
     }
 
-    public void setUrlBackgroup(String urlBackgroup) {
-        this.urlBackgroup = urlBackgroup;
-    }
-
     public String getIntroduce() {
         return introduce;
-    }
-
-    public void setIntroduce(String introduce) {
-        this.introduce = introduce;
     }
 
     public String getConfiguration() {
         return configuration;
     }
 
-    public void setConfiguration(String configuration) {
-        this.configuration = configuration;
-    }
-
     public String getLinkYoutube() {
         return linkYoutube;
-    }
-
-    public void setLinkYoutube(String linkYoutube) {
-        this.linkYoutube = linkYoutube;
     }
 
     public ArrayList<String> getArrUrlImage() {
         return arrUrlImage;
     }
 
-    public void setArrUrlImage(ArrayList<String> arrUrlImage) {
-        this.arrUrlImage = arrUrlImage;
-    }
 }

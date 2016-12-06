@@ -15,7 +15,8 @@ import java.util.ArrayList;
 /**
  * Created by vaio on 12/1/2016.
  */
-
+// pre-condition: mảng màu sắc để thay đổi theme
+    // post-condition : hiển thị các màu lên list view tại lựa chọn chủ đề trong drawerlayout
 public class ListViewThemeAdapter extends ArrayAdapter<Integer> {
     private LayoutInflater inflater;
     private ArrayList<Integer> arrItemColor;
@@ -46,7 +47,7 @@ public class ListViewThemeAdapter extends ArrayAdapter<Integer> {
         viewHolder.tvColor.setBackgroundColor(arrItemColor.get(position));
         return v;
     }
-
+    // Lưu các item đã load không phải ánh xạ lại
     class ViewHolder {
         TextView tvColor;
     }

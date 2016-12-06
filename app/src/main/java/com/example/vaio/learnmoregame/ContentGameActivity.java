@@ -2,6 +2,8 @@ package com.example.vaio.learnmoregame;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,7 +47,7 @@ import java.util.ArrayList;
  * Created by TungMai on 24/11/2016.
  */
 
-public class ContentGameActivity extends AppCompatActivity{
+public class ContentGameActivity extends AppCompatActivity {
     private static final String YOUTUBE_KEY = "AIzaSyDSct6gyum4wKmQ_LjAa9shTbPBzfE41uU";
     private static final String TAG = "ContentGameActivity";
     private ParserInformationGame parserInformationGame;
@@ -85,37 +87,48 @@ public class ContentGameActivity extends AppCompatActivity{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == ParserInformationGame.WHAT_PARSER_INFOR_GAME) {
-
-                final ItemInforGame itemInforGame = (ItemInforGame) msg.obj;
+            try {
+                if (msg.what == ParserInformationGame.WHAT_PARSER_INFOR_GAME) {
+                    if (!MainActivity.isNetworkAvailable(ContentGameActivity.this)) {
+                        return;
+                    }
+                    final ItemInforGame itemInforGame = (ItemInforGame) msg.obj;
 
 //                Log.e(TAG, itemInforGame.getUrlBackgroup());
+                    if (itemInforGame != null) {
+                        Picasso.with(ContentGameActivity.this)
+                                .load(itemInforGame.getUrlBackgroup())
+                                .error(R.drawable.offine)
+                                .placeholder(R.drawable.loading)
+                                .into(ivFirst);
+                    }
 
-                Picasso.with(getBaseContext()).load(itemInforGame.getUrlBackgroup()).into(ivFirst);
+                    arrImage.clear();
+                    if (itemInforGame.getArrUrlImage().size() > 0)
+                        arrImage.addAll(itemInforGame.getArrUrlImage());
+                    imageViewPagerAdapter.notifyDataSetChanged();
 
-                arrImage.clear();
-                if (itemInforGame.getArrUrlImage().size() > 0)
-                    arrImage.addAll(itemInforGame.getArrUrlImage());
-                imageViewPagerAdapter.notifyDataSetChanged();
-
-                tvContent.setText(itemInforGame.getIntroduce());
-                tvConfiguration.setText(itemInforGame.getConfiguration());
-                videoView.initialize(YOUTUBE_KEY, new YouTubePlayer.OnInitializedListener() {
-                    @Override
-                    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                        try {
-                            youTubePlayer.cueVideo(itemInforGame.getLinkYoutube());
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    tvContent.setText(itemInforGame.getIntroduce());
+                    tvConfiguration.setText(itemInforGame.getConfiguration());
+                    videoView.initialize(YOUTUBE_KEY, new YouTubePlayer.OnInitializedListener() {
+                        @Override
+                        public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                            try {
+                                youTubePlayer.cueVideo(itemInforGame.getLinkYoutube());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                        @Override
+                        public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 //                        Toast.makeText(getBaseContext(),"Lỗi",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        }
+                    });
 
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     };
@@ -180,8 +193,10 @@ public class ContentGameActivity extends AppCompatActivity{
         viewPagerImage.setAdapter(imageViewPagerAdapter);
         circlePageIndicator.setViewPager(viewPagerImage);
     }
+
     /**
      * khởi tạo menu trên thanh Toolbar
+     *
      * @param menu
      * @return
      */
@@ -195,6 +210,7 @@ public class ContentGameActivity extends AppCompatActivity{
 
     /**
      * phương thức bắt sự kiện trên menu của Toolbar
+     *
      * @param item
      * @return
      */

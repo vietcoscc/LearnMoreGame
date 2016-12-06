@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/image"
@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
-        android:src="@mipmap/ic_launcher" />
+        android:scaleType="centerInside" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,24 +21,22 @@
         android:orientation="vertical">
 
         <TextView
-            android:singleLine="true"
             android:id="@+id/name"
             style="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gameName" />
+            android:singleLine="true" />
 
         <TextView
-            android:singleLine="true"
             android:id="@+id/type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/gameType" />
+            android:singleLine="true" />
 
         <LinearLayout
-            android:layout_marginTop="@dimen/activity_margin_short"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_margin_short"
             android:weightSum="3">
 
             <ImageView
@@ -54,8 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="2"
-                android:text="@string/date" />
+                android:layout_weight="2" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -69,15 +65,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="@string/views" />
+                android:layout_weight="1" />
+
             <ImageView
-                android:alpha="0.7"
                 android:id="@+id/popupMenu"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_more_vert_black_24dp"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/icon_more_height" />
+                android:layout_height="@dimen/icon_more_height"
+                android:alpha="0.7"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_more_vert_black_24dp" />
         </LinearLayout>
     </LinearLayout>
 

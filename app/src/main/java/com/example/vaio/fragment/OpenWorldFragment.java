@@ -24,7 +24,7 @@ import java.util.Collection;
 /**
  * Created by vaio on 11/22/2016.
  */
-
+// Fragment hiển thị game thế giới mở
 public class OpenWorldFragment extends BaseFragment {
     public static final int TYPE_ID = 2;
     public static final String LINK = "http://linkneverdie.com/OpenWorld-Games/?theloaiId=7&page=";
@@ -37,9 +37,7 @@ public class OpenWorldFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_open_world_game, container, false);
-
-        initViews(v,LINK,TYPE_ID);
-//        getAllDataFromWeb(LINK,TYPE_ID,13);
+        initViews(v, LINK, TYPE_ID);
         return v;
     }
 

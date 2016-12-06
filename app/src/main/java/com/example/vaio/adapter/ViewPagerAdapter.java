@@ -2,6 +2,7 @@ package com.example.vaio.adapter;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +46,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         survivalGameFragment = new SurvivalGameFragment(context);
         tpsGameFragment = new TpsGameFragment(context);
     }
+
+    // thay đổi danh sách hiển thị từ listview sang gridview
     public void changeGridViewList(){
         actionGameFragment.changeGridViewList();
         fpsGameFragment.changeGridViewList();
@@ -52,7 +55,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         survivalGameFragment.changeGridViewList();
         tpsGameFragment.changeGridViewList();
     }
-
+    // thay đổi danh sách hiển thị từ gridview sang listview
     public void changListViewList(){
         actionGameFragment.changeListViewList();
         fpsGameFragment.changeListViewList();
@@ -64,7 +67,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return pageTitle[position];
     }
-
+    // trả về các fragment của các trang trong viewpager
     @Override
     public Fragment getItem(int position) {
         switch (position) {

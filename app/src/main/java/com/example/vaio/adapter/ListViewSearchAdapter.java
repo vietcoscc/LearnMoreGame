@@ -18,7 +18,8 @@ import java.util.ArrayList;
 /**
  * Created by vaio on 11/28/2016.
  */
-
+// pre-condition: mảng dữ liệu khi search
+    //post-condition:get ra các view để hiển thị lên listview drop down
 public class ListViewSearchAdapter extends ArrayAdapter<ItemListView> {
     private Context context;
     private LayoutInflater inflater;
@@ -55,7 +56,7 @@ public class ListViewSearchAdapter extends ArrayAdapter<ItemListView> {
         viewHolder.name.setText(arrSearchResult.get(position).getName());
         return v;
     }
-
+    // Lưu các item đã load không phải ánh xạ lại
     class ViewHolder {
         ImageView image;
         TextView name;

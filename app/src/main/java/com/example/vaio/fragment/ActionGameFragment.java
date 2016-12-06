@@ -25,8 +25,8 @@ import java.util.Collection;
 /**
  * Created by vaio on 11/22/2016.
  */
-
-public class ActionGameFragment extends BaseFragment  {
+// Fragment hiển thị game hành động
+public class ActionGameFragment extends BaseFragment {
     public static final int TYPE_ID = 0;
     public static final String LINK = "http://linkneverdie.com/Action-Games/?theloaiId=25&page=";
 
@@ -39,7 +39,6 @@ public class ActionGameFragment extends BaseFragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_action_game, container, false);
         initViews(v, LINK, TYPE_ID);
-//        getAllDataFromWeb(LINK,TYPE_ID,59);
         return v;
     }
 

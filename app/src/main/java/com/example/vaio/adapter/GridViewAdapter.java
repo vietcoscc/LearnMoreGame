@@ -18,7 +18,8 @@ import java.util.ArrayList;
 /**
  * Created by vaio on 11/26/2016.
  */
-
+// pre-condition: mảng dữ liệu từ web hoặc database
+//post-condition:get ra các view để hiển thị lên gridview
 public class GridViewAdapter extends BaseAdapter {
     private static final String TAG = "GridViewAdapter";
     private ArrayList<ItemListView> arrItemListView;

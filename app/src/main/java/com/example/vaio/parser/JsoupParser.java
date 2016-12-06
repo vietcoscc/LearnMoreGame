@@ -20,7 +20,8 @@ import java.util.ArrayList;
 /**
  * Created by vaio on 11/23/2016.
  */
-
+// pre-condition :  gồm một link của trang web cần lấy dữ liệu
+// post-condition : trả về một mảng dữ liệu gồm dữ liệu cho list view để hiển thị
 public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>> {
     private static final String TAG = "JsoupParser";
     private Handler handler;
@@ -32,7 +33,7 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
         this.typeId = typeId;
         this.context = context;
     }
-
+    // Show dialog loading
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -40,7 +41,7 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
                 "loading", true);
         progress.setCancelable(false);
     }
-
+    // truy cập các cặp thẻ để lấy data về
     @Override
     protected ArrayList<ItemListView> doInBackground(String... params) {
         ArrayList<ItemListView> arrItemListView = new ArrayList<>();
@@ -65,14 +66,7 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
                 String views = getViews(nameAndTypeAndDateAndViews);
                 String date = getDate(nameAndTypeAndDateAndViews, name, type, views);
                 String detailsUrl = "linkneverdie.com" + elementsD.get(i).select("a").attr("href");
-//
-//                Log.e(TAG,typeId+"");
-//                Log.e(TAG, imageUrl);
-//                Log.e(TAG, name);
-//                Log.e(TAG, type);
-//                Log.e(TAG, views);
-//                Log.e(TAG, date);
-//                Log.e(TAG, detailsUrl);
+
 
                 ItemListView itemListView = new ItemListView(typeId, imageUrl, name, type, date, views, detailsUrl);
                 arrItemListView.add(itemListView);
@@ -83,7 +77,7 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
 
         return arrItemListView;
     }
-
+    // Gửi mảng dữ liệu sang các fragment để xử lý hiển thị
     @Override
     protected void onPostExecute(ArrayList<ItemListView> itemListViews) {
         super.onPostExecute(itemListViews);
@@ -94,13 +88,13 @@ public class JsoupParser extends AsyncTask<String, Void, ArrayList<ItemListView>
         handler.sendMessage(msg);
         progress.dismiss();
     }
-
+    // get số lượng view từ chuỗi gồm ngày tháng và views
     private String getViews(String s) {
         StringBuilder builder = new StringBuilder(s);
         int start = builder.lastIndexOf(" ");
         return builder.substring(start + 1, builder.length());
     }
-
+    // get ngày tháng từ chuỗi gồm ngày tháng và view
     @NonNull
     private String getDate(String s, String name, String type, String views) {
         StringBuilder builder = new StringBuilder(s);

@@ -32,7 +32,6 @@ import java.util.Collection;
 
 public class MyDatabase {
     public static final int WHAT = 1;
-    public static final String TB_NAME_ALL_DATA = "alldatagamelist";
     public static final String TB_NAME_LIST_MAIN = "gamelist";
     public static final String TB_NAME_LIST_LATER = "listlater";
     public static final String TB_NAME_LIST_LIKE = "listlike";
@@ -56,15 +55,15 @@ public class MyDatabase {
         this.context = context;
         copyDatabase(context);
     }
-
+    // mở database
     public void openDatabase() {
         database = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
     }
-
+    // đóng database
     public void closeDatabase() {
         database.close();
     }
-
+    // copy database vào bộ nhớ trong của thiết bị
     private void copyDatabase(Context context) {
         File file = new File(PATH);
         if (file.exists()) {
@@ -164,7 +163,7 @@ public class MyDatabase {
         closeDatabase();
         return count;
     }
-
+    // thêm vào database mảng dữ liệu trên listview ở viewpager trang chủ
     public void insertArrItemListView(ArrayList<ItemListView> arrItemListView, String
             nameTable) {
         openDatabase();
@@ -182,8 +181,8 @@ public class MyDatabase {
         }
         closeDatabase();
     }
-
-    public ArrayList<ItemListView> getDataDistinctFromGameTable(String nameTable) { // Lấy mảng không bị trùng game , loại bỏ type id chỉ quan tâm tên
+    // Lấy mảng không bị trùng game , loại bỏ type id chỉ quan tâm tên
+    public ArrayList<ItemListView> getDataDistinctFromGameTable(String nameTable) {
         openDatabase();
         ArrayList<ItemListView> arrAllItemListView = new ArrayList<>();
         String columns[] = {IMAGE_URL, NAME, TYPE, DATE, VIEWS, DETAILS_URL};
@@ -214,14 +213,14 @@ public class MyDatabase {
         closeDatabase();
         return arrAllItemListView;
     }
-
+    // clear tất cả dữ liệu trong bảng nameTable ở trong databsse
     public void deleteAllItemListView(int typeId, String nameTable) {
         openDatabase();
         String whereArgs[] = {typeId + ""};
         database.delete(nameTable, TYPE_ID + " = ?", whereArgs);
         closeDatabase();
     }
-
+    // thêm vào database dữ liệu trên listview ở viewpager trang chủ
     public void insertItemListView(ItemListView itemListView, String nameTable) {
         openDatabase();
         ContentValues contentValues = new ContentValues();
@@ -235,7 +234,7 @@ public class MyDatabase {
         database.insert(nameTable, null, contentValues);
         closeDatabase();
     }
-
+    // xóa một dòng dữ liệu trong bảng nameTable ở trong database
     public void deleteItemListView(ItemListView itemListView, String nameTable) {
         openDatabase();
         String nameGame = itemListView.getName();
