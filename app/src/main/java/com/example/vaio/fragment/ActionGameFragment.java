@@ -28,7 +28,7 @@ import java.util.Collection;
 // Fragment hiển thị game hành động
 public class ActionGameFragment extends BaseFragment {
     public static final int TYPE_ID = 0;
-    public static final String LINK = "http://linkneverdie.com/Action-Games/?theloaiId=25&page=";
+    public static final String LINK = "http://linkneverdie.com/f1/Action-Games/?page=";
 
     public ActionGameFragment(Context context) {
         super(context);

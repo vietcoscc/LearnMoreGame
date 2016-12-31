@@ -27,7 +27,7 @@ import java.util.Collection;
 // Fragment hiển thị game thế giới mở
 public class OpenWorldFragment extends BaseFragment {
     public static final int TYPE_ID = 2;
-    public static final String LINK = "http://linkneverdie.com/OpenWorld-Games/?theloaiId=7&page=";
+    public static final String LINK = "http://linkneverdie.com/f1/OpenWorld-Games/?page=";
 
     public OpenWorldFragment(Context context) {
         super(context);

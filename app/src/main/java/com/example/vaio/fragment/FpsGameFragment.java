@@ -27,7 +27,7 @@ import java.util.Collection;
 // Fragment hiển thị game góc nhìn thứ nhất
 public class FpsGameFragment extends BaseFragment {
     public static final int TYPE_ID = 1;
-    public static final String LINK = "http://linkneverdie.com/FPS-Games/?theloaiId=1&page=";
+    public static final String LINK = "http://linkneverdie.com/f1/Action-Games/?page=";
 
     public FpsGameFragment(Context context) {
         super(context);

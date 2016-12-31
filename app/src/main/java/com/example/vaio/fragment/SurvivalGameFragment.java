@@ -27,7 +27,7 @@ import java.util.Collection;
 // Fragment hiển thị game sinh tồn
 public class SurvivalGameFragment extends BaseFragment {
     public static final int TYPE_ID = 3;
-    public static final String LINK = "http://linkneverdie.com/Survival-Games/?theloaiId=9&page=";
+    public static final String LINK = "http://linkneverdie.com/f1/Survival-Games/?page=";
 
     public SurvivalGameFragment(Context context) {
         super(context);
