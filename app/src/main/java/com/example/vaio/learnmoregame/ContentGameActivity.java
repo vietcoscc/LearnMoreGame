@@ -230,7 +230,7 @@ public class ContentGameActivity extends AppCompatActivity {
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_TEXT, itemListView.getDetailsUrl());
 
-                startActivity(Intent.createChooser(share, "Bạn muốn chia sẻ trên..."));
+                startActivity(Intent.createChooser(share, "Share"));
                 break;
             case android.R.id.home:
                 finish();
